@@ -1,0 +1,3 @@
+[submodule "Assets/Game/Scripts/Core"]
+	path = Assets/Game/Scripts/Core
+	url = git@github.com:Sugar0612/SUG_UnityCore.git
