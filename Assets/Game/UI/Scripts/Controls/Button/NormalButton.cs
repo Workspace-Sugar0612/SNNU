@@ -41,9 +41,11 @@ public class NormalButton : ButtonInteractive
     private void OnHoverEnter()
     {
         SetScale(_hoverScale, HOVER_DUR);
-
-        AudioClip hoverClip = ConfigManager.Get().GetConfig<UIInteractionSound>().norBtnHover;
-        AudioManager.Get().Play(hoverClip);
+        if (ConfigManager.Get().HasConfig<UIInteractionSound>())
+        {
+            AudioClip hoverClip = ConfigManager.Get().GetConfig<UIInteractionSound>().norBtnHover;
+            AudioManager.Get().Play(hoverClip);
+        }
     }
 
     private void OnHoverExit()
@@ -57,8 +59,11 @@ public class NormalButton : ButtonInteractive
     {
         SetScale(_selectScale, CLICK_DUR, () => SetScale(_normalScale, CLICK_DUR));
 
-        AudioClip selectClip = ConfigManager.Get().GetConfig<UIInteractionSound>().norBtnSelect;
-        AudioManager.Get().Play(selectClip);
+        if (ConfigManager.Get().HasConfig<UIInteractionSound>())
+        {
+            AudioClip selectClip = ConfigManager.Get().GetConfig<UIInteractionSound>().norBtnSelect;
+            AudioManager.Get().Play(selectClip);
+        }
     }
 
     // ===================
