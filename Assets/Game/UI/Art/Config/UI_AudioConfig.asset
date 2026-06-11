@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   norBtnHover: {fileID: 8300000, guid: 50bb99bf76e0d744988e9b4d4f932455, type: 3}
   norBtnSelect: {fileID: 8300000, guid: 992cdc1afddb47942af7d12a14a0eff0, type: 3}
-  scaleBtnHover: {fileID: 8300000, guid: 4cc0cfb8c2746f3409136ffd1589f62d, type: 3}
-  scaleBtnSelect: {fileID: 8300000, guid: b5d8465fd753d6e41877de658ebbd0bd, type: 3}
+  startBtnHover: {fileID: 8300000, guid: 4cc0cfb8c2746f3409136ffd1589f62d, type: 3}
+  startBtnSelect: {fileID: 8300000, guid: b5d8465fd753d6e41877de658ebbd0bd, type: 3}

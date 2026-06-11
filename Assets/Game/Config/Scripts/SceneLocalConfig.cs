@@ -1,7 +1,5 @@
-using SUG_UnityCore.UI;
-using System;
-using System.Collections;
 using System.Collections.Generic;
+using SUG_UnityCore;
 using UnityEngine;
 
 public class SceneLocalConfig : ScriptableObject

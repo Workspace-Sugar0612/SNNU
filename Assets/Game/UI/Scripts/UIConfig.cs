@@ -7,11 +7,11 @@ using UnityEngine.UI;
 [CreateAssetMenu(fileName = "UI_AudioConfig", menuName = "Game/UI/AudioConfig")]
 public class UIInteractionSound : ScriptableObject
 {
-    [Header("normal Button inter music")]
+    [Header("Normal button inter music")]
     public AudioClip norBtnHover;
     public AudioClip norBtnSelect;
 
-    [Header("scale Button inter music")]
-    public AudioClip scaleBtnHover;
-    public AudioClip scaleBtnSelect;
+    [Header("Start button inter music")]
+    public AudioClip startBtnHover;
+    public AudioClip startBtnSelect;
 }

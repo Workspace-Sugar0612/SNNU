@@ -10,7 +10,6 @@ public class ImageEdgeFlowEffect : MonoBehaviour
     public float speed = 0.2f;      // 光流速度
 
     // —— Private variable ——
-    private Coroutine sweepCoroutine;
     private bool _running = false;
 
     // ===================
@@ -18,16 +17,19 @@ public class ImageEdgeFlowEffect : MonoBehaviour
     // ===================
     void Awake()
     {
-        if(mat == null)
-        {
-            Image img = GetComponent<Image>();
-            if(img != null)
-                mat = img.material;
-        }
+        // if(mat == null)
+        // {
+        //     Image img = GetComponent<Image>();
+        //     if(img != null)
+        //         mat = img.material;
+        // }
 
         // 默认关闭流光
         if(mat != null)
         {
+            Image img = GetComponent<Image>();
+            if (img != null) img.material = new Material(mat);
+            mat = img.material;
             mat.SetFloat("_SweepPos", -1f); // -1表示不显示
             mat.color = new Color(mat.color.r, mat.color.g, mat.color.b, 0.0f);
         }
@@ -68,7 +70,10 @@ public class ImageEdgeFlowEffect : MonoBehaviour
     {
         _running = false;
         if(mat != null)
+        {
+            mat.color = new Color(mat.color.r, mat.color.g, mat.color.b, 0.0f);
             mat.SetFloat("_SweepPos", -1f); // 隐藏流光
+        }
     }
 
     private IEnumerator SweepOnceCoroutine(float duration)

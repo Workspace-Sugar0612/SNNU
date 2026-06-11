@@ -1,9 +1,7 @@
-using DG.Tweening;
 using SUG_UnityCore;
-using System;
 using UnityEngine;
 
-public class NormalButton : ButtonInteractive
+public class NormalButton : ButtonBase
 {
     // ===================
     // Life cycle
@@ -37,7 +35,7 @@ public class NormalButton : ButtonInteractive
 
     private void OnHoverExit()
     {
-        transform.DOScale(new Vector3(1.0f, 1.0f, 1.0f), 1.0f);
+        //transform.DOScale(new Vector3(1.0f, 1.0f, 1.0f), 1.0f);
     }
 
     private void OnClickEvent()

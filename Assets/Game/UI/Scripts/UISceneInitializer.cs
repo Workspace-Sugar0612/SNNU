@@ -1,10 +1,7 @@
-using SUG_UnityCore;
-using SUG_UnityCore.UI;
 using System;
 using System.Reflection;
-using Unity.VisualScripting;
-using UnityEngine;
 using UnityEngine.SceneManagement;
+using SUG_UnityCore;
 
 public class UISceneInitializer : Singleton<UISceneInitializer, SingletonGlobal>
 {
