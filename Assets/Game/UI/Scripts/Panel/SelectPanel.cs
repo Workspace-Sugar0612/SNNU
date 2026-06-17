@@ -1,15 +1,13 @@
 using SUG_UnityCore;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SelectPanel : UIBase
 {
     // —— UI Component ——
     [Header("UI组件")]
-    [SerializeField] private ButtonBase _startBtn;
-    [SerializeField] private ButtonBase _theoryBtn, _parcticeBtn;
-
-    // —— Runtime variable ——
-    private ImageEdgeFlowEffect _theoryBtnEffect, _practiceBtnEffect;
+    [SerializeField] private ControlBase _startBtn;
+    [SerializeField] private ControlBase _theoryBtn, _parcticeBtn;
 
     // ===================
     // Life cycle
@@ -26,18 +24,13 @@ public class SelectPanel : UIBase
 
     private void EventInitialized()
     {
-        _startBtn.onClickEnter += () => OnStartClickEvent();
-        _theoryBtn.onClickEnter += () => OnTheoryClickEvent();
-        _parcticeBtn.onClickEnter += () => OnPracticeClickEvent();
+        _parcticeBtn.onClickEnter += OnPracticeClickEvent;
+        _theoryBtn.onClickEnter += OnTheoryClickEvent;
     }
 
     private void ComponentInitialized()
     {
-        _theoryBtnEffect = _theoryBtn.GetComponentInChildren<ImageEdgeFlowEffect>();
-        if (_theoryBtnEffect != null)   _theoryBtnEffect.StopFlow();
-
-        _practiceBtnEffect = _parcticeBtn.GetComponentInChildren<ImageEdgeFlowEffect>();
-        if (_practiceBtnEffect != null) _practiceBtnEffect.StopFlow();
+        
     }
 
 
@@ -51,13 +44,11 @@ public class SelectPanel : UIBase
 
     private void OnTheoryClickEvent()
     {
-       if (_theoryBtnEffect != null)   _theoryBtnEffect.PlayFlow();
-       if (_practiceBtnEffect != null) _practiceBtnEffect.StopFlow();
+       _parcticeBtn.RaiseTrigger(InteractionTrigger.DeSelect);
     }
 
     private void OnPracticeClickEvent()
     {
-       if (_theoryBtnEffect != null)   _theoryBtnEffect.StopFlow();
-       if (_practiceBtnEffect != null) _practiceBtnEffect.PlayFlow();
+        _theoryBtn.RaiseTrigger(InteractionTrigger.DeSelect);
     }
 }

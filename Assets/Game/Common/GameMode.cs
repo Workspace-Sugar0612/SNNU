@@ -5,7 +5,7 @@ public sealed class GameMode : Singleton<GameMode, SingletonGlobal>
 {
     // ——  Config variable ——
     [Header("Is it unlock parctic.")]
-    public bool isLockPar = false;
+    public bool isPar = false;
 
     private GameGlobalSetting _gameSetting;
 
@@ -26,6 +26,6 @@ public sealed class GameMode : Singleton<GameMode, SingletonGlobal>
         _gameSetting = ConfigManager.Get().GetConfig<GameGlobalSetting>();
 
         // Config element initialization.
-        isLockPar = _gameSetting.isPracticeMode;
+        isPar = _gameSetting.isPracticeMode;
     } 
 }
