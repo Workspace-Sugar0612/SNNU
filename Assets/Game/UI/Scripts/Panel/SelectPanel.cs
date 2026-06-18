@@ -6,8 +6,9 @@ public class SelectPanel : UIBase
 {
     // —— UI Component ——
     [Header("UI组件")]
-    [SerializeField] private ControlBase _startBtn;
-    [SerializeField] private ControlBase _theoryBtn, _parcticeBtn;
+    [SerializeField] private UIButton _startBtn;
+    [SerializeField] private UIButton _theoryBtn;
+    [SerializeField] private ParcticeButton _parcticeBtn;
 
     // ===================
     // Life cycle
@@ -21,34 +22,58 @@ public class SelectPanel : UIBase
     // ===================
     // Initialized
     // ===================
+    
+    private void ComponentInitialized()
+    {
+        // 实训按钮初始化
+        bool unlock = GameMode.Get().isPar;
+        _parcticeBtn.Refresh(unlock);
+    }
 
     private void EventInitialized()
     {
-        _parcticeBtn.onClickEnter += OnPracticeClickEvent;
-        _theoryBtn.onClickEnter += OnTheoryClickEvent;
+        _startBtn.onHoverEnter += OnStartHoverEnter;
+        _startBtn.onHoverExit  += OnStartHoverExit;
+        _startBtn.onClickEnter += OnStartSelected;
+        _parcticeBtn.onClickEnter += OnPracticeSelected;
+        _theoryBtn.onClickEnter   += OnTheorySelected;
     }
-
-    private void ComponentInitialized()
-    {
-        
-    }
-
 
     // ===================
     // Event
     // ===================
-    private void OnStartClickEvent()
+    private void OnStartHoverEnter()
     {
-
+        _startBtn.RaiseTrigger(InteractionTrigger.HoverEnter);
     }
 
-    private void OnTheoryClickEvent()
+    private void OnStartHoverExit()
     {
-       _parcticeBtn.RaiseTrigger(InteractionTrigger.DeSelect);
+        _startBtn.RaiseTrigger(InteractionTrigger.HoverExit);
     }
 
-    private void OnPracticeClickEvent()
+    private void OnStartSelected()
     {
-        _theoryBtn.RaiseTrigger(InteractionTrigger.DeSelect);
+        _startBtn.RaiseTrigger(InteractionTrigger.Selected);
+    }
+
+    private void OnTheorySelected()
+    {
+        _theoryBtn  .RaiseTrigger(InteractionTrigger.Selected);
+        _parcticeBtn.RaiseTrigger(InteractionTrigger.DeSelect);
+    }
+
+    private void OnPracticeSelected()
+    {
+        _theoryBtn  .RaiseTrigger(InteractionTrigger.DeSelect);
+        if (GameMode.Get().isPar == false)
+        {
+            _parcticeBtn.Refresh(false);
+            _parcticeBtn.RaiseTrigger(InteractionTrigger.UnSelctable);
+            return;
+        }
+
+        _parcticeBtn.Refresh(true);
+        _parcticeBtn.RaiseTrigger(InteractionTrigger.Selected);
     }
 }

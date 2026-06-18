@@ -2,7 +2,7 @@ using SUG_UnityCore;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class ParcticeButton : ControlBase
+public sealed class ParcticeButton : UIButton
 {
     // —— Component variable ——
     [SerializeField] private GameObject _lockMask;
@@ -12,48 +12,11 @@ public class ParcticeButton : ControlBase
     [SerializeField] private Vector3 _norScale;
 
     // ===================
-    // Life cycle
-    // ===================
-    private void Start()
-    {
-        Initialzaction();
-    }
-
-    // ===================
     // Initialized
     // ===================
-    private void Initialzaction()
+    public void Refresh(bool unlock)
     {
-        bool par = GameMode.Get().isPar;
-        transform.localScale = par ? _norScale : _lockScale;
-        _lockMask.gameObject.SetActive(!par);
-    }
-
-    // ===================
-    // Event
-    // ===================
-    protected override void OnHoverEnter()
-    {
-        RaiseTrigger(InteractionTrigger.HoverEnter, ControlType.Normal);
-    }
-
-    protected override void OnHoverExit()
-    {
-        RaiseTrigger(InteractionTrigger.HoverExit, ControlType.Normal);
-    }
-
-    protected override void OnClickEnter()
-    {
-        if (GameMode.Get().isPar == false)
-        {
-            _lockMask.gameObject.SetActive(true);
-            transform.localScale = _lockScale;
-            RaiseTrigger(InteractionTrigger.UnSelctable, ControlType.Normal);
-            return;
-        }
-        
-        _lockMask.gameObject.SetActive(false);
-        transform.localScale = _norScale;
-        RaiseTrigger(InteractionTrigger.Selected, ControlType.Normal);
+        transform.localScale = unlock ? _norScale : _lockScale;
+        _lockMask.gameObject.SetActive(!unlock);
     }
 }
