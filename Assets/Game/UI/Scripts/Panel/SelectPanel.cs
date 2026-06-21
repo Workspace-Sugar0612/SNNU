@@ -1,5 +1,6 @@
 using SUG_UnityCore;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class SelectPanel : UIBase
@@ -9,6 +10,9 @@ public class SelectPanel : UIBase
     [SerializeField] private UIButton _startBtn;
     [SerializeField] private UIButton _theoryBtn;
     [SerializeField] private ParcticeButton _parcticeBtn;
+
+    // —— Runtime variable ——
+    private GameGlobalSetting _gameCfg;
 
     // ===================
     // Life cycle
@@ -55,17 +59,23 @@ public class SelectPanel : UIBase
     private void OnStartSelected()
     {
         _startBtn.RaiseTrigger(InteractionTrigger.Selected);
+
+        if (_gameCfg == null) _gameCfg =  ConfigManager.Get().GetConfig<GameGlobalSetting>();
+        if (GameMode.Get().currGameMode == GameMode.GameType.Theory) SceneManager.LoadSceneAsync(_gameCfg.theoryScene);
+        else if (GameMode.Get().currGameMode == GameMode.GameType.Parctice) SceneManager.LoadSceneAsync(_gameCfg.parcitcScene);
+        else {}
     }
 
     private void OnTheorySelected()
     {
         _theoryBtn  .RaiseTrigger(InteractionTrigger.Selected);
         _parcticeBtn.RaiseTrigger(InteractionTrigger.DeSelect);
+        GameMode.Get().currGameMode = GameMode.GameType.Theory;
     }
 
     private void OnPracticeSelected()
     {
-        _theoryBtn  .RaiseTrigger(InteractionTrigger.DeSelect);
+        _theoryBtn.RaiseTrigger(InteractionTrigger.DeSelect);
         if (GameMode.Get().isPar == false)
         {
             _parcticeBtn.Refresh(false);
@@ -75,5 +85,6 @@ public class SelectPanel : UIBase
 
         _parcticeBtn.Refresh(true);
         _parcticeBtn.RaiseTrigger(InteractionTrigger.Selected);
+        GameMode.Get().currGameMode = GameMode.GameType.Parctice;
     }
 }
