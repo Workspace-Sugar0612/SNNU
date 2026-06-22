@@ -61,16 +61,16 @@ public class SelectPanel : UIBase
         _startBtn.RaiseTrigger(InteractionTrigger.Selected);
 
         if (_gameCfg == null) _gameCfg =  ConfigManager.Get().GetConfig<GameGlobalSetting>();
-        if (GameMode.Get().currGameMode == GameMode.GameType.Theory) SceneManager.LoadSceneAsync(_gameCfg.theoryScene);
-        else if (GameMode.Get().currGameMode == GameMode.GameType.Parctice) SceneManager.LoadSceneAsync(_gameCfg.parcitcScene);
+        if (GameMode.Get().currGameMode == GameType.Theory) SceneManager.LoadSceneAsync(_gameCfg.theoryScene);
+        else if (GameMode.Get().currGameMode == GameType.Parctice) SceneManager.LoadSceneAsync(_gameCfg.parcitcScene);
         else {}
     }
 
     private void OnTheorySelected()
     {
-        _theoryBtn  .RaiseTrigger(InteractionTrigger.Selected);
+        _theoryBtn.RaiseTrigger(InteractionTrigger.Selected);
         _parcticeBtn.RaiseTrigger(InteractionTrigger.DeSelect);
-        GameMode.Get().currGameMode = GameMode.GameType.Theory;
+        GameMode.Get().currGameMode = GameType.Theory;
     }
 
     private void OnPracticeSelected()
@@ -80,11 +80,12 @@ public class SelectPanel : UIBase
         {
             _parcticeBtn.Refresh(false);
             _parcticeBtn.RaiseTrigger(InteractionTrigger.UnSelctable);
+            GameMode.Get().currGameMode = GameType.None;
             return;
         }
 
         _parcticeBtn.Refresh(true);
         _parcticeBtn.RaiseTrigger(InteractionTrigger.Selected);
-        GameMode.Get().currGameMode = GameMode.GameType.Parctice;
+        GameMode.Get().currGameMode = GameType.Parctice;
     }
 }

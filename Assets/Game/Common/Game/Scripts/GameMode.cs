@@ -1,6 +1,14 @@
 using SUG_UnityCore;
 using UnityEngine;
 
+public enum GameType 
+{
+     None,
+     Start, 
+     Parctice, 
+     Theory
+}
+
 public sealed class GameMode : Singleton<GameMode, SingletonGlobal>
 {
     // ——  Config variable ——
@@ -9,7 +17,6 @@ public sealed class GameMode : Singleton<GameMode, SingletonGlobal>
 
     [Header("Current game mode.")]
     public GameType currGameMode = GameType.None;
-    public enum GameType { None, Parctice, Theory }
 
     // Game setting config.
     private GameGlobalSetting _gameSetting;

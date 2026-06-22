@@ -13,15 +13,15 @@ MonoBehaviour:
   m_Name: UI_AudioConfig
   m_EditorClassIdentifier: 
   rules:
-  - trigger: 3
+  - trigger: 8
     types: 2
     clip: {fileID: 8300000, guid: da9ac8f4347c20048a9bcdaaeb4b4d88, type: 3}
-  - trigger: 4
+  - trigger: 16
     types: 2
     clip: {fileID: 8300000, guid: 992cdc1afddb47942af7d12a14a0eff0, type: 3}
-  - trigger: 0
+  - trigger: 1
     types: 1
     clip: {fileID: 8300000, guid: 4cc0cfb8c2746f3409136ffd1589f62d, type: 3}
-  - trigger: 4
+  - trigger: 16
     types: 1
     clip: {fileID: 8300000, guid: b5d8465fd753d6e41877de658ebbd0bd, type: 3}

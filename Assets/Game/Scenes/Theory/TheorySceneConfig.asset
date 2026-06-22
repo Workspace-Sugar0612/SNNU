@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 56ca96a3cf9c47840aac2906a7d92b3d, type: 3}
-  m_Name: StartSceneConfig
-  m_EditorClassIdentifier: Assembly-CSharp:SUG_UnityCore:StartSceneConfig
+  m_Name: TheorySceneConfig
+  m_EditorClassIdentifier: Assembly-CSharp:SUG_UnityCore:TheorySceneConfig
   AutoOpenUITypes:
-  - {fileID: 5061192637428456048, guid: 394e52db8dff23540a585680e61ea211, type: 3}
+  - {fileID: 6001468814637671887, guid: 863ec90415fa54948abd7c1e9c254e0e, type: 3}
