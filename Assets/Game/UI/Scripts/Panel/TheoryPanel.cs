@@ -3,11 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using SUG_UnityCore;
 
+public enum TheoryMode 
+{
+    None = 0, 
+    CourseIntro = 1 << 0, // 课程介绍
+    SafetySpec = 1 << 1, // 安全规范
+    TheoryKnowledge = 1 << 2, // 理论规范
+    TheoryAssessment = 1 << 3 // 理论考核
+}
+
 public class TheoryPanel : UIBase
 {
-    // —— Runtime variable ——
+    // —— UI variable ——
     [SerializeField] private UIButton _backBtn;
-    [SerializeField] private UIButton _safeBtn;
+    [SerializeField] private List<TheoryElementButton> _theoryBtns = new List<TheoryElementButton>();
 
     // ======================
     // Life cycle
@@ -22,20 +31,24 @@ public class TheoryPanel : UIBase
     // ======================
     private void EventInitialization()
     {
-        _safeBtn.onHoverEnter += HoverEnterSafeBtn;
-        _backBtn.onHoverEnter += HoverEnterBackBtn;
+        foreach (TheoryElementButton btn in _theoryBtns)
+        {
+            btn.onSelect += OnClickTheoryButton;
+        }
     }
 
     // ======================
     // Event
     // ======================
-    private void HoverEnterSafeBtn()
-    {
-        _safeBtn.RaiseTrigger(InteractionTrigger.HoverEnter);
-    }
 
-    private void HoverEnterBackBtn()
+    // Theory buttons selected event.
+    private void OnClickTheoryButton(TheoryMode mode)
     {
-        _backBtn.RaiseTrigger(InteractionTrigger.HoverEnter);
+        foreach (var btn in _theoryBtns)
+        {
+            if ((mode & btn.currMode) != 0) btn.RaiseTrigger(InteractionTrigger.Selected);
+            else btn.RaiseTrigger(InteractionTrigger.DeSelect);
+        }
     }
+    
 }

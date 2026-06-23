@@ -188,11 +188,10 @@ MonoBehaviour:
   _playTrigger: 1
   _stopTrigger: 2
   _otherTrigger: 0
+  _image: {fileID: 8069329275818954131}
   glowColor: {r: 0.3, g: 0.7, b: 1, a: 1}
   glowWidth: 0.027
-  glowIntensity: 4
-  pulseSpeed: 2
-  _image: {fileID: 8069329275818954131}
+  glowIntensity: 10
 --- !u!1 &1040722159465842688
 GameObject:
   m_ObjectHideFlags: 0

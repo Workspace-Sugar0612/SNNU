@@ -36,8 +36,6 @@ public class SelectPanel : UIBase
 
     private void EventInitialized()
     {
-        _startBtn.onHoverEnter += OnStartHoverEnter;
-        _startBtn.onHoverExit  += OnStartHoverExit;
         _startBtn.onClickEnter += OnStartSelected;
         _parcticeBtn.onClickEnter += OnPracticeSelected;
         _theoryBtn.onClickEnter   += OnTheorySelected;
@@ -46,15 +44,6 @@ public class SelectPanel : UIBase
     // ===================
     // Event
     // ===================
-    private void OnStartHoverEnter()
-    {
-        _startBtn.RaiseTrigger(InteractionTrigger.HoverEnter);
-    }
-
-    private void OnStartHoverExit()
-    {
-        _startBtn.RaiseTrigger(InteractionTrigger.HoverExit);
-    }
 
     private void OnStartSelected()
     {
