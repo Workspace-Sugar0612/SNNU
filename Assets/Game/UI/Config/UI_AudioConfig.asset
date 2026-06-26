@@ -25,3 +25,6 @@ MonoBehaviour:
   - trigger: 16
     types: 1
     clip: {fileID: 8300000, guid: b5d8465fd753d6e41877de658ebbd0bd, type: 3}
+  - trigger: 16
+    types: 4
+    clip: {fileID: 8300000, guid: a7b72b20ff4cda6499eef158fefa1135, type: 3}

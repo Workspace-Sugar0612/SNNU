@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using SUG_UnityCore;
+using UnityEngine.SceneManagement;
 
 public enum TheoryMode 
 {
@@ -24,31 +25,61 @@ public class TheoryPanel : UIBase
     private void Start()
     {
         EventInitialization();
+        StartCoroutine(Initializaction());
     }
 
     // ======================
     // Initialized
     // ======================
+
+    IEnumerator Initializaction()
+    {
+        yield return null;
+        foreach (TheoryElementButton btn in _theoryBtns) { btn.TogglePanel(); }
+        _theoryBtns[0]?.OnPointClick();
+    }
+
     private void EventInitialization()
     {
         foreach (TheoryElementButton btn in _theoryBtns)
         {
             btn.onSelect += OnClickTheoryButton;
         }
+
+        _backBtn.onClickEnter += OnClickBack;
     }
 
     // ======================
     // Event
     // ======================
 
+    private void OnClickBack()
+    {
+        var _gameCfg =  ConfigManager.Get().GetConfig<GameGlobalSetting>();
+        SceneManager.LoadSceneAsync(_gameCfg.startScene);
+    }
+
     // Theory buttons selected event.
     private void OnClickTheoryButton(TheoryMode mode)
     {
         foreach (var btn in _theoryBtns)
         {
-            if ((mode & btn.currMode) != 0) btn.RaiseTrigger(InteractionTrigger.Selected);
-            else btn.RaiseTrigger(InteractionTrigger.DeSelect);
+            if ((mode & btn.currMode) != 0)
+            {
+                btn.RaiseTrigger(InteractionTrigger.Selected);
+                btn.SetPanelActive(true);
+            }
+            else 
+            {
+                btn.RaiseTrigger(InteractionTrigger.DeSelect);
+                btn.SetPanelActive(false);
+            }
         }
     }
     
+
+    public void OnHoverEnter()
+    {
+        Debug.Log("Enter");
+    }
 }
