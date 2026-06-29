@@ -1,4 +1,4 @@
-using SUG_UnityCore;
+using SUG.UnityCore;
 using Unity.VisualScripting;
 using UnityEngine;
 

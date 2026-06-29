@@ -1,4 +1,4 @@
-using SUG_UnityCore;
+using SUG.UnityCore;
 using UnityEngine;
 
 public enum GameType 

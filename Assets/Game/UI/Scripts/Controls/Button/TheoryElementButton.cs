@@ -1,5 +1,5 @@
 using UnityEngine;
-using SUG_UnityCore;
+using SUG.UnityCore;
 using System;
 using DG.Tweening;
 
