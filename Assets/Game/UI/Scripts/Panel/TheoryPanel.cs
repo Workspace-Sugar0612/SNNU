@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SUG.UnityCore;
 using UnityEngine.SceneManagement;
+using SUG.Essentials;
 
 public enum TheoryMode 
 {

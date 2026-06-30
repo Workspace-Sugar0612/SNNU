@@ -1,4 +1,4 @@
-using SUG.UnityCore;
+using SUG.Essentials;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
