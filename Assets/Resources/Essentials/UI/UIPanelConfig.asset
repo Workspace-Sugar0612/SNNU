@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d9d72d52ffd6ff4c9058e76a0704be7, type: 3}
   m_Name: UIPanelConfig
   m_EditorClassIdentifier: 
-  uiConfigs: []
+  uiConfigs:
+  - prefab: {fileID: 7631110305459592520, guid: 394e52db8dff23540a585680e61ea211,
+      type: 3}
+    parent: 

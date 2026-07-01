@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56ca96a3cf9c47840aac2906a7d92b3d, type: 3}
+  m_Script: {fileID: 11500000, guid: 15a3235401fbdd441a66bc1612bca70b, type: 3}
   m_Name: StartSceneConfig
   m_EditorClassIdentifier: Assembly-CSharp:SUG_UnityCore:StartSceneConfig
   AutoOpenUITypes:

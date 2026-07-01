@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 226376790}
   - component: {fileID: 226376789}
   - component: {fileID: 226376788}
+  - component: {fileID: 226376791}
   m_Layer: 0
   m_Name: 'Screen Canvas '
   m_TagString: Untagged
@@ -223,6 +224,18 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &226376791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 226376786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 967c21f6015bf964fabb93f190ed7127, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &254889408
 GameObject:
   m_ObjectHideFlags: 0
@@ -235,6 +248,7 @@ GameObject:
   - component: {fileID: 254889412}
   - component: {fileID: 254889411}
   - component: {fileID: 254889410}
+  - component: {fileID: 254889413}
   m_Layer: 0
   m_Name: 'World Canvas             '
   m_TagString: Untagged
@@ -319,11 +333,41 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 1
-  m_AdditionalShaderChannelsFlag: 7
+  m_AdditionalShaderChannelsFlag: 31
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &254889413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 254889408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 031733dc734b8d44b99ec74879aea210, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &307333431 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6756149229632990167, guid: e36e6537b86dad64e9a323f7e72c1ab0,
+    type: 3}
+  m_PrefabInstance: {fileID: 5793650996353121132}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &307333433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 307333431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d336103ad06212469e6a862af814aa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -719,7 +763,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1013750287}
   - component: {fileID: 1013750289}
-  - component: {fileID: 1013750288}
   m_Layer: 0
   m_Name: Audio Manager
   m_TagString: Untagged
@@ -742,18 +785,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2139724365}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1013750288
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1013750286}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 381d6f9475091a348819a728dea0e554, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!82 &1013750289
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1057,10 +1088,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    - target: {fileID: 8440512577964949403, guid: e36e6537b86dad64e9a323f7e72c1ab0,
+        type: 3}
+      propertyPath: _configList.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 3165676366579443803, guid: e36e6537b86dad64e9a323f7e72c1ab0, type: 3}
+    - {fileID: 4408558624029081458, guid: e36e6537b86dad64e9a323f7e72c1ab0, type: 3}
+    m_RemovedGameObjects:
+    - {fileID: 507261981836729194, guid: e36e6537b86dad64e9a323f7e72c1ab0, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6756149229632990167, guid: e36e6537b86dad64e9a323f7e72c1ab0,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 307333433}
   m_SourcePrefab: {fileID: 100100000, guid: e36e6537b86dad64e9a323f7e72c1ab0, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
