@@ -15,4 +15,5 @@ MonoBehaviour:
   uiConfigs:
   - prefab: {fileID: 7631110305459592520, guid: 394e52db8dff23540a585680e61ea211,
       type: 3}
-    parent: 
+  - prefab: {fileID: 2613005330963760219, guid: 863ec90415fa54948abd7c1e9c254e0e,
+      type: 3}

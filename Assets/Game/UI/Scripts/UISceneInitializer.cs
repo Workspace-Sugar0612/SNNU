@@ -2,15 +2,16 @@ using System;
 using System.Reflection;
 using UnityEngine.SceneManagement;
 using UnityEngine;
-using VContainer;
 using SUG.Essentials;
 
 public class UISceneInitializer : MonoBehaviour
 {
     private MethodInfo _openUIMethod;
 
-    [Inject]
-    private IUIService _uiMgr;
+    // Inject
+    [EInject] private ICfgService _cfgMgr;
+
+    [EInject] private IUIService _uiMgr;
 
     // =======================
     // Life cycle
@@ -23,9 +24,10 @@ public class UISceneInitializer : MonoBehaviour
 
     private void OnSceneLoad(Scene sc, LoadSceneMode mode)
     {
-        if (ConfigManager.Get().HasConfig<SceneLocalConfig>())
+        if (_cfgMgr.HasConfig<SceneLocalConfig>())
         {
-            SceneLocalConfig c = ConfigManager.Get().GetConfig<SceneLocalConfig>();
+            SceneLocalConfig c = _cfgMgr.GetConfig<SceneLocalConfig>();
+
             foreach (var p in c.AutoOpenUITypes)
             {
                 Type t = p.GetType();
@@ -33,5 +35,10 @@ public class UISceneInitializer : MonoBehaviour
                 genericOpen?.Invoke(_uiMgr, null);
             }
         }
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoad;
     }
 }

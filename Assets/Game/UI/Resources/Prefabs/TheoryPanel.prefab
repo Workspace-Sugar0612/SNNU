@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: f335c2c2a0c85b9489bd4ff1a394b8ea, type: 2}
+  m_Material: {fileID: 2100000, guid: dc3920f0e45e27d4493fa8471c3b1bd3, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -85,7 +85,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 167376785787519344}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e9fb640d4fcdf247a436574002cac7f, type: 3}
+  m_Script: {fileID: 11500000, guid: b09bc0b5429403c4a98f3e65a5b9cf7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _playTrigger: 1
@@ -93,7 +93,7 @@ MonoBehaviour:
   _otherTrigger: 0
   alwaysActive: 0
   _image: {fileID: 6616748077484743337}
-  glowColor: {r: 1, g: 1, b: 1, a: 1}
+  glowColor: {r: 0.3, g: 0.7, b: 1, a: 1}
   glowWidth: 4
   glowIntensity: 10
 --- !u!1 &759556615555189490
@@ -696,18 +696,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1629210000452637709}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 732d712e188b0b54e9e8cfcddddb9ddc, type: 3}
+  m_Script: {fileID: 11500000, guid: 0b3f065675bc327418c68b74c3709fc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playTrigger: 16
-  _stopTrigger: 4
-  _otherTrigger: 0
-  alwaysActive: 0
-  _normalScale: {x: 1.5, y: 1.5, z: 1.5}
-  _hoverScale: {x: 1.6, y: 1.6, z: 1.6}
-  _selectScale: {x: 0.9, y: 0.9, z: 0.9}
-  hoverDur: 0
-  clickDur: 0
+  type: 4
 --- !u!114 &4200894225234996598
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -717,10 +709,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1629210000452637709}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce443abe8cb24f040a1fa609946fcade, type: 3}
+  m_Script: {fileID: 11500000, guid: 707a2693ed3c0344b9f10e8cfffbdf37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playTrigger: 16
+  _playTrigger: -1
   _stopTrigger: 0
   _otherTrigger: 0
   alwaysActive: 0
@@ -1281,10 +1273,10 @@ RectTransform:
   - {fileID: 7347296237631749516}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4901159994577047819
 CanvasRenderer:
@@ -1766,18 +1758,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2964990883654190676}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 732d712e188b0b54e9e8cfcddddb9ddc, type: 3}
+  m_Script: {fileID: 11500000, guid: 0b3f065675bc327418c68b74c3709fc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playTrigger: 16
-  _stopTrigger: 4
-  _otherTrigger: 0
-  alwaysActive: 0
-  _normalScale: {x: 1.5, y: 1.5, z: 1.5}
-  _hoverScale: {x: 1.6, y: 1.6, z: 1.6}
-  _selectScale: {x: 0.9, y: 0.9, z: 0.9}
-  hoverDur: 0
-  clickDur: 0
+  type: 4
 --- !u!114 &7285022445402487832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1787,10 +1771,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2964990883654190676}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce443abe8cb24f040a1fa609946fcade, type: 3}
+  m_Script: {fileID: 11500000, guid: 707a2693ed3c0344b9f10e8cfffbdf37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playTrigger: 16
+  _playTrigger: -1
   _stopTrigger: 0
   _otherTrigger: 0
   alwaysActive: 0
@@ -1895,7 +1879,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: f335c2c2a0c85b9489bd4ff1a394b8ea, type: 2}
+  m_Material: {fileID: 2100000, guid: dc3920f0e45e27d4493fa8471c3b1bd3, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -1966,7 +1950,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3707165897367038498}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b63333f40d7375b44ac7a94828d45dcb, type: 3}
+  m_Script: {fileID: 11500000, guid: 0b3f065675bc327418c68b74c3709fc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   type: 1
@@ -1979,18 +1963,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 3707165897367038498}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 732d712e188b0b54e9e8cfcddddb9ddc, type: 3}
+  m_Script: {fileID: 11500000, guid: 707a2693ed3c0344b9f10e8cfffbdf37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playTrigger: 1
-  _stopTrigger: 2
+  _playTrigger: -1
+  _stopTrigger: 0
   _otherTrigger: 0
   alwaysActive: 0
-  _normalScale: {x: 1.3, y: 1.3, z: 1.3}
-  _hoverScale: {x: 1.4, y: 1.4, z: 1.4}
-  _selectScale: {x: 0.9, y: 0.9, z: 0.9}
-  hoverDur: 1
-  clickDur: 0.3
 --- !u!114 &1263412528560207443
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2000,13 +1979,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 3707165897367038498}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce443abe8cb24f040a1fa609946fcade, type: 3}
+  m_Script: {fileID: 11500000, guid: b09bc0b5429403c4a98f3e65a5b9cf7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playTrigger: -1
-  _stopTrigger: 0
+  _playTrigger: 1
+  _stopTrigger: 2
   _otherTrigger: 0
   alwaysActive: 0
+  _image: {fileID: 7312559995249517094}
+  glowColor: {r: 0.3, g: 0.7, b: 1, a: 1}
+  glowWidth: 4
+  glowIntensity: 10
 --- !u!114 &3424242726017662295
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2016,17 +1999,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 3707165897367038498}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e9fb640d4fcdf247a436574002cac7f, type: 3}
+  m_Script: {fileID: 11500000, guid: 94fed686e6b582143a4d0c77315b0d44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _playTrigger: 1
   _stopTrigger: 2
   _otherTrigger: 0
   alwaysActive: 0
-  _image: {fileID: 7312559995249517094}
-  glowColor: {r: 0.3, g: 0.7, b: 1, a: 1}
-  glowWidth: 0.027
-  glowIntensity: 10
+  _normalScale: {x: 1.3, y: 1.3, z: 1.3}
+  _hoverScale: {x: 1.4, y: 1.4, z: 1.4}
+  _selectScale: {x: 1.2, y: 1.2, z: 1.2}
+  hoverDur: 1
+  clickDur: 0.3
 --- !u!1 &3844509471502989984
 GameObject:
   m_ObjectHideFlags: 0
@@ -2085,7 +2069,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: f335c2c2a0c85b9489bd4ff1a394b8ea, type: 2}
+  m_Material: {fileID: 2100000, guid: dc3920f0e45e27d4493fa8471c3b1bd3, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -2112,7 +2096,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3844509471502989984}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e9fb640d4fcdf247a436574002cac7f, type: 3}
+  m_Script: {fileID: 11500000, guid: b09bc0b5429403c4a98f3e65a5b9cf7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _playTrigger: 1
@@ -2120,7 +2104,7 @@ MonoBehaviour:
   _otherTrigger: 0
   alwaysActive: 0
   _image: {fileID: 3968868400402533963}
-  glowColor: {r: 1, g: 1, b: 1, a: 1}
+  glowColor: {r: 0.3, g: 0.7, b: 1, a: 1}
   glowWidth: 4
   glowIntensity: 10
 --- !u!1 &4140303679872101346
@@ -2635,18 +2619,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4729278258476172256}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 732d712e188b0b54e9e8cfcddddb9ddc, type: 3}
+  m_Script: {fileID: 11500000, guid: 0b3f065675bc327418c68b74c3709fc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playTrigger: 16
-  _stopTrigger: 4
-  _otherTrigger: 0
-  alwaysActive: 0
-  _normalScale: {x: 1.5, y: 1.5, z: 1.5}
-  _hoverScale: {x: 1.6, y: 1.6, z: 1.6}
-  _selectScale: {x: 0.9, y: 0.9, z: 0.9}
-  hoverDur: 0
-  clickDur: 0
+  type: 4
 --- !u!114 &1334315203769375227
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2656,10 +2632,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4729278258476172256}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce443abe8cb24f040a1fa609946fcade, type: 3}
+  m_Script: {fileID: 11500000, guid: 707a2693ed3c0344b9f10e8cfffbdf37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playTrigger: 16
+  _playTrigger: -1
   _stopTrigger: 0
   _otherTrigger: 0
   alwaysActive: 0
@@ -2761,7 +2737,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: f335c2c2a0c85b9489bd4ff1a394b8ea, type: 2}
+  m_Material: {fileID: 2100000, guid: dc3920f0e45e27d4493fa8471c3b1bd3, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -2832,7 +2808,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5454574145570487624}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b63333f40d7375b44ac7a94828d45dcb, type: 3}
+  m_Script: {fileID: 11500000, guid: 0b3f065675bc327418c68b74c3709fc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   type: 2
@@ -2845,17 +2821,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 5454574145570487624}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e9fb640d4fcdf247a436574002cac7f, type: 3}
+  m_Script: {fileID: 11500000, guid: b09bc0b5429403c4a98f3e65a5b9cf7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _playTrigger: 1
   _stopTrigger: 2
   _otherTrigger: 0
   alwaysActive: 0
-  _image: {fileID: 0}
+  _image: {fileID: 5925258739872135967}
   glowColor: {r: 0.3, g: 0.7, b: 1, a: 1}
-  glowWidth: 0.05
-  glowIntensity: 15
+  glowWidth: 4
+  glowIntensity: 10
 --- !u!1 &5456018076850955434
 GameObject:
   m_ObjectHideFlags: 0
@@ -3008,18 +2984,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 5456018076850955434}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 732d712e188b0b54e9e8cfcddddb9ddc, type: 3}
+  m_Script: {fileID: 11500000, guid: 0b3f065675bc327418c68b74c3709fc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playTrigger: 16
-  _stopTrigger: 4
-  _otherTrigger: 0
-  alwaysActive: 0
-  _normalScale: {x: 1.5, y: 1.5, z: 1.5}
-  _hoverScale: {x: 1.6, y: 1.6, z: 1.6}
-  _selectScale: {x: 0.9, y: 0.9, z: 0.9}
-  hoverDur: 0
-  clickDur: 0
+  type: 4
 --- !u!114 &5748787706385420215
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3029,10 +2997,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 5456018076850955434}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce443abe8cb24f040a1fa609946fcade, type: 3}
+  m_Script: {fileID: 11500000, guid: 707a2693ed3c0344b9f10e8cfffbdf37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playTrigger: 16
+  _playTrigger: -1
   _stopTrigger: 0
   _otherTrigger: 0
   alwaysActive: 0
@@ -3554,7 +3522,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: f335c2c2a0c85b9489bd4ff1a394b8ea, type: 2}
+  m_Material: {fileID: 2100000, guid: dc3920f0e45e27d4493fa8471c3b1bd3, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -3581,7 +3549,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7574989806916432404}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e9fb640d4fcdf247a436574002cac7f, type: 3}
+  m_Script: {fileID: 11500000, guid: b09bc0b5429403c4a98f3e65a5b9cf7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _playTrigger: 1
@@ -3589,7 +3557,7 @@ MonoBehaviour:
   _otherTrigger: 0
   alwaysActive: 0
   _image: {fileID: 4165686455987816257}
-  glowColor: {r: 1, g: 1, b: 1, a: 1}
+  glowColor: {r: 0.3, g: 0.7, b: 1, a: 1}
   glowWidth: 4
   glowIntensity: 10
 --- !u!1 &7825405606367892283
@@ -4068,7 +4036,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: f335c2c2a0c85b9489bd4ff1a394b8ea, type: 2}
+  m_Material: {fileID: 2100000, guid: dc3920f0e45e27d4493fa8471c3b1bd3, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -4095,7 +4063,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8848384419986791359}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e9fb640d4fcdf247a436574002cac7f, type: 3}
+  m_Script: {fileID: 11500000, guid: b09bc0b5429403c4a98f3e65a5b9cf7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _playTrigger: 1
@@ -4103,7 +4071,7 @@ MonoBehaviour:
   _otherTrigger: 0
   alwaysActive: 0
   _image: {fileID: 4176447568785260184}
-  glowColor: {r: 1, g: 1, b: 1, a: 1}
+  glowColor: {r: 0.3, g: 0.7, b: 1, a: 1}
   glowWidth: 4
   glowIntensity: 10
 --- !u!1 &8867527708912963594

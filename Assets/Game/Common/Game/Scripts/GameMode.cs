@@ -21,9 +21,13 @@ public sealed class GameMode : Singleton<GameMode, SingletonGlobal>
     // Game setting config.
     private GameGlobalSetting _gameSetting;
 
+    // Inject
+    [EInject] private ICfgService _cfgMgr;
+
     // =================
     // Life cycle
     // =================
+
     private void Start()
     {
         ConfigInit();
@@ -35,7 +39,7 @@ public sealed class GameMode : Singleton<GameMode, SingletonGlobal>
     private void ConfigInit()
     {
         // Get game global setting config instance.
-        _gameSetting = ConfigManager.Get().GetConfig<GameGlobalSetting>();
+        _gameSetting = _cfgMgr.GetConfig<GameGlobalSetting>();
 
         // Config element initialization.
         isPar = _gameSetting.isPracticeMode;

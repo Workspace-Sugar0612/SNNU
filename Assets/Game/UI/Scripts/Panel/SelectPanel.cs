@@ -14,6 +14,9 @@ public class SelectPanel : UIBase
     // —— Runtime variable ——
     private GameGlobalSetting _gameCfg;
 
+    // Inject
+    [EInject] private ICfgService _cfgMgr;
+
     // ===================
     // Life cycle
     // ===================
@@ -49,7 +52,7 @@ public class SelectPanel : UIBase
     {
         _startBtn.RaiseTrigger(InteractionTrigger.Selected);
 
-        if (_gameCfg == null) _gameCfg =  ConfigManager.Get().GetConfig<GameGlobalSetting>();
+        if (_gameCfg == null) _gameCfg =  _cfgMgr.GetConfig<GameGlobalSetting>();
         if (GameMode.Get().currGameMode == GameType.Theory) SceneManager.LoadSceneAsync(_gameCfg.theoryScene);
         else if (GameMode.Get().currGameMode == GameType.Parctice) SceneManager.LoadSceneAsync(_gameCfg.parcitcScene);
         else {}

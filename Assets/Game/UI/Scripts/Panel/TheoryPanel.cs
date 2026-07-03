@@ -1,8 +1,8 @@
+using SUG.Essentials;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using SUG.Essentials;
 
 public enum TheoryMode 
 {
@@ -18,6 +18,9 @@ public class TheoryPanel : UIBase
     // —— UI variable ——
     [SerializeField] private UIButton _backBtn;
     [SerializeField] private List<TheoryElementButton> _theoryBtns = new List<TheoryElementButton>();
+
+    // Inject
+    [EInject] private ICfgService _cfgMgr;
 
     // ======================
     // Life cycle
@@ -55,7 +58,7 @@ public class TheoryPanel : UIBase
 
     private void OnClickBack()
     {
-        var _gameCfg =  ConfigManager.Get().GetConfig<GameGlobalSetting>();
+        var _gameCfg = _cfgMgr.GetConfig<GameGlobalSetting>();
         SceneManager.LoadSceneAsync(_gameCfg.startScene);
     }
 

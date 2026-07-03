@@ -12,4 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c737de008872844a82f5d0307806e2c, type: 3}
   m_Name: UISoundCue
   m_EditorClassIdentifier: 
-  rules: []
+  rules:
+  - trigger: 16
+    types: 2
+    clip: {fileID: 8300000, guid: 992cdc1afddb47942af7d12a14a0eff0, type: 3}
+  - trigger: 8
+    types: 2
+    clip: {fileID: 8300000, guid: da9ac8f4347c20048a9bcdaaeb4b4d88, type: 3}
+  - trigger: 1
+    types: 1
+    clip: {fileID: 8300000, guid: 4cc0cfb8c2746f3409136ffd1589f62d, type: 3}
+  - trigger: 16
+    types: 1
+    clip: {fileID: 8300000, guid: b5d8465fd753d6e41877de658ebbd0bd, type: 3}
+  - trigger: 16
+    types: 4
+    clip: {fileID: 8300000, guid: a7b72b20ff4cda6499eef158fefa1135, type: 3}
