@@ -3,7 +3,7 @@ using UnityEditor.Search.Providers;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "GameGlobalSetting", menuName = "Game/GameGlobalSetting")]
-public class GameGlobalSetting : ScriptableObject
+public class GameGlobalSettingSO : ScriptableObject
 {
     [Header("是否解锁了实训模式")]
     public bool isPracticeMode = false;

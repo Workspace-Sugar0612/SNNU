@@ -9,20 +9,19 @@ public enum GameType
      Theory
 }
 
-public sealed class GameMode : Singleton<GameMode, SingletonGlobal>
+public sealed class GameMode : MonoBehaviour, IGlobalService, IGameService
 {
     // ——  Config variable ——
-    [Header("Is it unlock parctic.")]
-    public bool isPar = false;
+    //[Header("Is it unlock parctic.")]
+    public bool isPar { set; get; }
 
-    [Header("Current game mode.")]
-    public GameType currGameMode = GameType.None;
+    //[Header("Current game mode.")]
+    public GameType currGameMode { set; get; }
+    public TheoryBackMode currTheoryBackMode { set; get; }
 
     // Game setting config.
-    private GameGlobalSetting _gameSetting;
-
-    // Inject
-    [EInject] private ICfgService _cfgMgr;
+    [SerializeField] private GameGlobalSettingSO _gameSetting;
+    public GameGlobalSettingSO gameSetting { set => _gameSetting = value; get => _gameSetting; }
 
     // =================
     // Life cycle
@@ -30,18 +29,16 @@ public sealed class GameMode : Singleton<GameMode, SingletonGlobal>
 
     private void Start()
     {
-        ConfigInit();
+        Initialztion();
     }
 
     // =================
     // Initialized
     // =================
-    private void ConfigInit()
+    private void Initialztion()
     {
-        // Get game global setting config instance.
-        _gameSetting = _cfgMgr.GetConfig<GameGlobalSetting>();
-
-        // Config element initialization.
-        isPar = _gameSetting.isPracticeMode;
+        currGameMode = GameType.None;
+        currTheoryBackMode = TheoryBackMode.Normal;
+        isPar = gameSetting.isPracticeMode;
     } 
 }

@@ -12,10 +12,12 @@ public class SelectPanel : UIBase
     [SerializeField] private ParcticeButton _parcticeBtn;
 
     // —— Runtime variable ——
-    private GameGlobalSetting _gameCfg;
+    private GameGlobalSettingSO _gameCfg;
 
     // Inject
     [EInject] private ICfgService _cfgMgr;
+    [EInject] private IGameService _gameMgr;
+    [EInject] private ISceneManagementService _sceneMgr;
 
     // ===================
     // Life cycle
@@ -33,7 +35,7 @@ public class SelectPanel : UIBase
     private void ComponentInitialized()
     {
         // 实训按钮初始化
-        bool unlock = GameMode.Get().isPar;
+        bool unlock = _gameMgr.isPar;
         _parcticeBtn.Refresh(unlock);
     }
 
@@ -52,9 +54,9 @@ public class SelectPanel : UIBase
     {
         _startBtn.RaiseTrigger(InteractionTrigger.Selected);
 
-        if (_gameCfg == null) _gameCfg =  _cfgMgr.GetConfig<GameGlobalSetting>();
-        if (GameMode.Get().currGameMode == GameType.Theory) SceneManager.LoadSceneAsync(_gameCfg.theoryScene);
-        else if (GameMode.Get().currGameMode == GameType.Parctice) SceneManager.LoadSceneAsync(_gameCfg.parcitcScene);
+        if (_gameCfg == null) _gameCfg = _gameMgr.gameSetting;
+        if (_gameMgr.currGameMode == GameType.Theory) _sceneMgr.LoadSceneAsync(_gameCfg.theoryScene);
+        else if (_gameMgr.currGameMode == GameType.Parctice) _sceneMgr.LoadSceneAsync(_gameCfg.parcitcScene);
         else {}
     }
 
@@ -62,22 +64,22 @@ public class SelectPanel : UIBase
     {
         _theoryBtn.RaiseTrigger(InteractionTrigger.Selected);
         _parcticeBtn.RaiseTrigger(InteractionTrigger.DeSelect);
-        GameMode.Get().currGameMode = GameType.Theory;
+        _gameMgr.currGameMode = GameType.Theory;
     }
 
     private void OnPracticeSelected()
     {
         _theoryBtn.RaiseTrigger(InteractionTrigger.DeSelect);
-        if (GameMode.Get().isPar == false)
+        if (_gameMgr.isPar == false)
         {
             _parcticeBtn.Refresh(false);
             _parcticeBtn.RaiseTrigger(InteractionTrigger.UnSelctable);
-            GameMode.Get().currGameMode = GameType.None;
+            _gameMgr.currGameMode = GameType.None;
             return;
         }
 
         _parcticeBtn.Refresh(true);
         _parcticeBtn.RaiseTrigger(InteractionTrigger.Selected);
-        GameMode.Get().currGameMode = GameType.Parctice;
+        _gameMgr.currGameMode = GameType.Parctice;
     }
 }

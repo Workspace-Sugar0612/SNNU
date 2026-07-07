@@ -19,7 +19,7 @@ public class UISceneInitializer : MonoBehaviour
     private void Awake()
     {
         _openUIMethod = typeof(IUIService).GetMethod("OpenUI", Type.EmptyTypes);
-        SceneManager.sceneLoaded += OnSceneLoad;
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoad;
     }
 
     private void OnSceneLoad(Scene sc, LoadSceneMode mode)
@@ -39,6 +39,6 @@ public class UISceneInitializer : MonoBehaviour
 
     private void OnDestroy()
     {
-        SceneManager.sceneLoaded -= OnSceneLoad;
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoad;
     }
 }

@@ -1330,12 +1330,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiLevel: 0
   isWorldUI: 1
-  _backBtn: {fileID: 2213343812729129698}
+  _backBtn: {fileID: 809380720301799502}
   _theoryBtns:
   - {fileID: 2718853031796850457}
   - {fileID: 1688563567825496814}
   - {fileID: 2868880619529005613}
   - {fileID: 6257141969529648534}
+  _startTheory: {fileID: 3156924571645015078}
 --- !u!1 &2759435979287771183
 GameObject:
   m_ObjectHideFlags: 0
@@ -2688,8 +2689,8 @@ GameObject:
   - component: {fileID: 1719097857556427178}
   - component: {fileID: 5925258739872135967}
   - component: {fileID: 8394500963848644962}
-  - component: {fileID: 2213343812729129698}
   - component: {fileID: 2382835205918339600}
+  - component: {fileID: 809380720301799502}
   m_Layer: 0
   m_Name: Back Button
   m_TagString: Untagged
@@ -2799,19 +2800,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &2213343812729129698
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5454574145570487624}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b3f065675bc327418c68b74c3709fc8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 2
 --- !u!114 &2382835205918339600
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2832,6 +2820,19 @@ MonoBehaviour:
   glowColor: {r: 0.3, g: 0.7, b: 1, a: 1}
   glowWidth: 4
   glowIntensity: 10
+--- !u!114 &809380720301799502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5454574145570487624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a578183e3a2ae004a8dcd857b5a74a72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 2
 --- !u!1 &5456018076850955434
 GameObject:
   m_ObjectHideFlags: 0

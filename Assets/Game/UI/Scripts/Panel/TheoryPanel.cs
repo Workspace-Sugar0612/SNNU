@@ -4,23 +4,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public enum TheoryMode 
-{
-    None = 0, 
-    CourseIntro = 1 << 0, // 课程介绍
-    SafetySpec = 1 << 1, // 安全规范
-    TheoryKnowledge = 1 << 2, // 理论规范
-    TheoryAssessment = 1 << 3 // 理论考核
-}
-
 public class TheoryPanel : UIBase
 {
     // —— UI variable ——
-    [SerializeField] private UIButton _backBtn;
+    [SerializeField] private TheoryBackButton _backBtn;
     [SerializeField] private List<TheoryElementButton> _theoryBtns = new List<TheoryElementButton>();
+    [SerializeField] private UIButton _startTheory; // 开始考核
 
     // Inject
-    [EInject] private ICfgService _cfgMgr;
+    [EInject] private IGameService _gameMgr;
+    [EInject] private ISceneManagementService _sceneMgr;
 
     // ======================
     // Life cycle
@@ -49,22 +42,37 @@ public class TheoryPanel : UIBase
             btn.onSelect += OnClickTheoryButton;
         }
 
-        _backBtn.onClickEnter += OnClickBack;
+        _backBtn.onSelected += OnTheoryBackClick;
     }
 
     // ======================
     // Event
     // ======================
 
-    private void OnClickBack()
+    // Theory back button selected event.
+    private void OnNormalBack()
     {
-        var _gameCfg = _cfgMgr.GetConfig<GameGlobalSetting>();
-        SceneManager.LoadSceneAsync(_gameCfg.startScene);
+        var _gameCfg = _gameMgr.gameSetting;
+
+        _sceneMgr.LoadSceneAsync(_gameCfg.startScene);
+    }
+
+    private void OnAssBack()
+    {
+
+    }
+
+    private void OnTheoryBackClick(TheoryBackMode mode)
+    {
+        if ((mode & TheoryBackMode.Normal) != 0) OnNormalBack();
+        else if (mode == TheoryBackMode.Assess) OnAssBack();
+        else { }
     }
 
     // Theory buttons selected event.
     private void OnClickTheoryButton(TheoryMode mode)
     {
+        _gameMgr.currTheoryBackMode = (mode & TheoryMode.TheoryAssessment) == 0 ? TheoryBackMode.Normal : TheoryBackMode.Assess;
         foreach (var btn in _theoryBtns)
         {
             if ((mode & btn.currMode) != 0)
