@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Packages/com.sug.essentials/Test/PersistentManagers.unity
+    guid: 108eee0c9d540e84591654ac807af675
+  - enabled: 1
     path: Assets/Game/Scenes/Start/Start.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1

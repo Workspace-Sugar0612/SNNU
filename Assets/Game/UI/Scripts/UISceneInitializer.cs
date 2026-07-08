@@ -10,8 +10,8 @@ public class UISceneInitializer : MonoBehaviour
 
     // Inject
     [EInject] private ICfgService _cfgMgr;
-
     [EInject] private IUIService _uiMgr;
+    [EInject] private ISceneService _sceneMgr;
 
     // =======================
     // Life cycle
@@ -19,7 +19,7 @@ public class UISceneInitializer : MonoBehaviour
     private void Awake()
     {
         _openUIMethod = typeof(IUIService).GetMethod("OpenUI", Type.EmptyTypes);
-        UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoad;
+        _sceneMgr.sceneLoaded += OnSceneLoad;
     }
 
     private void OnSceneLoad(Scene sc, LoadSceneMode mode)
@@ -39,6 +39,6 @@ public class UISceneInitializer : MonoBehaviour
 
     private void OnDestroy()
     {
-        UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoad;
+        _sceneMgr.sceneLoaded -= OnSceneLoad;
     }
 }

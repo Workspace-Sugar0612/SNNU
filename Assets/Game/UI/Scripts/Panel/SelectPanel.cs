@@ -15,9 +15,9 @@ public class SelectPanel : UIBase
     private GameGlobalSettingSO _gameCfg;
 
     // Inject
-    [EInject] private ICfgService _cfgMgr;
-    [EInject] private IGameService _gameMgr;
-    [EInject] private ISceneManagementService _sceneMgr;
+    [EInject] private ICfgService   _cfgMgr;
+    [EInject] private IGameService  _gameMgr;
+    [EInject] private ISceneService _sceneMgr;
 
     // ===================
     // Life cycle

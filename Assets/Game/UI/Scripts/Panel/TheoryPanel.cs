@@ -12,8 +12,8 @@ public class TheoryPanel : UIBase
     [SerializeField] private UIButton _startTheory; // 开始考核
 
     // Inject
-    [EInject] private IGameService _gameMgr;
-    [EInject] private ISceneManagementService _sceneMgr;
+    [EInject] private IGameService  _gameMgr;
+    [EInject] private ISceneService _sceneMgr;
 
     // ======================
     // Life cycle
