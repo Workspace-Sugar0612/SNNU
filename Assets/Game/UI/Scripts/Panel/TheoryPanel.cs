@@ -2,7 +2,8 @@ using SUG.Essentials;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using TMPro;
+using UnityEngine.UI;
 
 public class TheoryPanel : UIBase
 {
@@ -10,6 +11,21 @@ public class TheoryPanel : UIBase
     [SerializeField] private TheoryBackButton _backBtn;
     [SerializeField] private List<TheoryElementButton> _theoryBtns = new List<TheoryElementButton>();
     [SerializeField] private UIButton _startTheory; // 开始考核
+
+    [Header("考核UI成员")]
+    [Header("答题区域")]
+    [SerializeField] private UIPanel _assPanel; // 考核面板
+    [SerializeField] private TextMeshProUGUI _titleContext; // 题目
+    [SerializeField] private UIButton _prevBtn, _nextBtn, _submitBtn; // 上一题按钮，下一题按钮，提交按钮
+    [SerializeField] private ToggleGroup _optionGroup; // 考核选择按钮父物体
+    [SerializeField] private GameObject _optionPrefab; // 考核选择按钮预制体
+
+    [Header("答题进度区域")]
+    [SerializeField] private TextMeshProUGUI _currCnt; // 当前完成的题目数量
+    [SerializeField] private TextMeshProUGUI _totalCnt; // 全部题目数量
+    [SerializeField] private Slider _percentSlider; // 答题进度条
+    [SerializeField] private Transform _titlementContent; // 答题题号按钮父类
+    [SerializeField] private GameObject _titlementPrefab; // 答题题号预制体
 
     // Inject
     [EInject] private IGameService  _gameMgr;
@@ -31,8 +47,13 @@ public class TheoryPanel : UIBase
     IEnumerator Initializaction()
     {
         yield return null;
+
+        // 初始化理论考核按钮
         foreach (TheoryElementButton btn in _theoryBtns) { btn.TogglePanel(); }
         _theoryBtns[0]?.OnPointClick();
+
+        // 初始化考核面板
+        SetAssPanelActive(false);
     }
 
     private void EventInitialization()
@@ -43,6 +64,7 @@ public class TheoryPanel : UIBase
         }
 
         _backBtn.onSelected += OnTheoryBackClick;
+        _startTheory.onClickEnter += StartAssessment;
     }
 
     // ======================
@@ -88,6 +110,24 @@ public class TheoryPanel : UIBase
         }
     }
     
+    // Theory assessment start.
+    private void StartAssessment()
+    {
+        foreach (var btn in _theoryBtns)
+        {
+            btn.RaiseTrigger(InteractionTrigger.DeSelect);
+            btn.SetPanelActive(false);
+        }
+        SetAssPanelActive(true);
+    }
+
+    // 设置考核面板显示/关闭特效
+    public void SetAssPanelActive(bool active)
+    {
+        InteractionTrigger trigger = active ? InteractionTrigger.Selected : InteractionTrigger.DeSelect;
+        _assPanel.RaiseTrigger(trigger);
+        _assPanel.gameObject.SetActive(active);
+    }
 
     public void OnHoverEnter()
     {
