@@ -18,7 +18,7 @@ public class TheoryPanel : UIBase
     [SerializeField] private TextMeshProUGUI _titleContext; // 题目
     [SerializeField] private UIButton _prevBtn, _nextBtn, _submitBtn; // 上一题按钮，下一题按钮，提交按钮
     [SerializeField] private ToggleGroup _optionGroup; // 考核选择按钮父物体
-    [SerializeField] private GameObject _optionPrefab; // 考核选择按钮预制体
+    [SerializeField] private AssOption _optionPrefab; // 考核选择按钮预制体
 
     [Header("答题进度区域")]
     [SerializeField] private TextMeshProUGUI _currCnt; // 当前完成的题目数量
@@ -30,12 +30,17 @@ public class TheoryPanel : UIBase
     // Inject
     [EInject] private IGameService  _gameMgr;
     [EInject] private ISceneService _sceneMgr;
+    [EInject] private IAssService _assMgr;
+
+    // Assessment data.
+    private QuestionData _currData;
 
     // ======================
     // Life cycle
     // ======================
     private void Start()
     {
+        DataInitialization();
         EventInitialization();
         StartCoroutine(Initializaction());
     }
@@ -43,6 +48,12 @@ public class TheoryPanel : UIBase
     // ======================
     // Initialized
     // ======================
+
+    private void DataInitialization()
+    {
+        _currData = _assMgr.GetCurrQuestion();
+        LoadData(_currData);
+    }
 
     IEnumerator Initializaction()
     {
@@ -65,6 +76,16 @@ public class TheoryPanel : UIBase
 
         _backBtn.onSelected += OnTheoryBackClick;
         _startTheory.onClickEnter += StartAssessment;
+    }
+
+    private void LoadData(QuestionData data)
+    {
+        _titleContext.text = data.title;
+        foreach (var op in data.options)
+        {
+            AssOption option = Essentials.Instantiate(_optionPrefab, _optionGroup.transform);
+            option.Setup(op.isAnswer, op.content);
+        }
     }
 
     // ======================
