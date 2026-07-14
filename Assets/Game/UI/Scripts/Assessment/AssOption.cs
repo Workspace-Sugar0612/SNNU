@@ -13,12 +13,21 @@ public class AssOption : MonoBehaviour
     // 选项内容
     [SerializeField] private TextMeshProUGUI _contentTx;
     [SerializeField] private Toggle _selected;
+    private ToggleGroup _group;
 
     // 初始化设置
-    public void Setup(bool isAnswer, string content)
+    public void Setup(bool isAnswer, string content, ToggleGroup group)
     {
         _isAnswer = isAnswer;
         _contentTx.text = content;
         _selected.isOn = false;
+        _group = group;
+        _selected.group = _group;
+    }
+
+    // 设置激活
+    public void SetActive(bool active)
+    {
+        gameObject.SetActive(active);
     }
 }

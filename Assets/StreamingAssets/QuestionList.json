@@ -1,0 +1,25 @@
+[
+    {
+        "title": "【单选题】在荧光猝灭现象中，根据Jablonski能级图，荧光发射通常发生在哪种能级跃迁过程中？",
+        "options": [
+            {
+                "isAnswer": true,
+                "content": "单重激发态的最低振动能级 → 基态"
+            },
+            {
+                "isAnswer": false,
+                "content": "三重激发态 → 基态"
+            },
+            {
+                "isAnswer": false,
+                "content": "基态 → 单重激发态"
+            },
+            {
+                "isAnswer": false,
+                "content": "单重激发态 → 三重激发态"
+            }
+        ],
+        "analysis": "荧光发射通常发生在分子从第一激发单重态的最低振动能级回落到基态的过程中。",
+        "isSingle": true
+    }
+]

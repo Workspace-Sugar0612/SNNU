@@ -28,9 +28,9 @@ public class TheoryPanel : UIBase
     [SerializeField] private GameObject _titlementPrefab; // 答题题号预制体
 
     // Inject
-    [EInject] private IGameService  _gameMgr;
-    [EInject] private ISceneService _sceneMgr;
-    [EInject] private IAssService _assMgr;
+    [Inject] private IGameService  _gameMgr;
+    [Inject] private ISceneService _sceneMgr;
+    [Inject] private IAssService _assMgr;
 
     // Assessment data.
     private QuestionData _currData;
@@ -78,13 +78,18 @@ public class TheoryPanel : UIBase
         _startTheory.onClickEnter += StartAssessment;
     }
 
+    /// <summary>
+    /// 载入当前题目信息至UI面板。
+    /// </summary>
+    /// <param name="data"></param>
     private void LoadData(QuestionData data)
     {
         _titleContext.text = data.title;
         foreach (var op in data.options)
         {
             AssOption option = Essentials.Instantiate(_optionPrefab, _optionGroup.transform);
-            option.Setup(op.isAnswer, op.content);
+            option.Setup(op.isAnswer, op.content, _optionGroup);
+            option.SetActive(true);
         }
     }
 
@@ -151,7 +156,7 @@ public class TheoryPanel : UIBase
     }
 
     public void OnHoverEnter()
-    {
+    {  
         Debug.Log("Enter");
     }
 }

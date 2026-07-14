@@ -1,8 +1,9 @@
+using SUG.Essentials;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IGameService
+[Injectable] public interface IGameService
 {
     public bool isPar { set; get; }
     public GameType currGameMode { set; get; }

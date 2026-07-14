@@ -9,9 +9,9 @@ public class UISceneInitializer : MonoBehaviour
     private MethodInfo _openUIMethod;
 
     // Inject
-    [EInject] private ICfgService _cfgMgr;
-    [EInject] private IUIService _uiMgr;
-    [EInject] private ISceneService _sceneMgr;
+    [Inject] private ICfgService _cfgMgr;
+    [Inject] private IUIService _uiMgr;
+    [Inject] private ISceneService _sceneMgr;
 
     // =======================
     // Life cycle

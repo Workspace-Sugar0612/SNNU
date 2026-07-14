@@ -14,7 +14,7 @@ public class TheoryBackButton : UIButton
     public event Action<TheoryBackMode> onSelected;
 
     // Inject
-    [EInject] private IGameService _gameMgr;
+    [Inject] private IGameService _gameMgr;
 
     // Life cycle
     private void Start()
