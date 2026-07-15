@@ -1,8 +1,9 @@
+using DG.Tweening;
 using SUG.Essentials;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class TheoryPanel : UIBase
@@ -25,7 +26,12 @@ public class TheoryPanel : UIBase
     [SerializeField] private TextMeshProUGUI _totalCnt; // 全部题目数量
     [SerializeField] private Slider _percentSlider; // 答题进度条
     [SerializeField] private Transform _titlementContent; // 答题题号按钮父类
-    [SerializeField] private GameObject _titlementPrefab; // 答题题号预制体
+    [SerializeField] private QuestionNavigatorItem _titlementPrefab; // 答题题号预制体
+
+    // Data container
+
+    // 题目引导管理容器
+    private readonly List<QuestionNavigatorItem> _navigationItems = new List<QuestionNavigatorItem>();
 
     // Inject
     [Inject] private IGameService  _gameMgr;
@@ -52,7 +58,18 @@ public class TheoryPanel : UIBase
     private void DataInitialization()
     {
         _currData = _assMgr.GetCurrQuestion();
+
+        // 当前题目初始化考核UI面板
         LoadData(_currData);
+
+        // 题目列表初始化考核引导面板
+        for (int i = 0; i < _assMgr.questionList.Count; ++i)
+        {
+            var item = Essentials.Instantiate(_titlementPrefab, _titlementContent);
+            item.Setup(i.ToString());
+            item.gameObject.SetActive(true);
+            _navigationItems.Add(item);
+        }
     }
 
     IEnumerator Initializaction()
@@ -65,6 +82,10 @@ public class TheoryPanel : UIBase
 
         // 初始化考核面板
         SetAssPanelActive(false);
+
+        // 提交按钮初始化时需要隐藏
+        _nextBtn.gameObject.SetActive(true);
+        _submitBtn.gameObject.SetActive(false);
     }
 
     private void EventInitialization()
@@ -87,10 +108,16 @@ public class TheoryPanel : UIBase
         _titleContext.text = data.title;
         foreach (var op in data.options)
         {
+            // 当前题目选项创建
             AssOption option = Essentials.Instantiate(_optionPrefab, _optionGroup.transform);
-            option.Setup(op.isAnswer, op.content, _optionGroup);
+            option.Setup(op.isAnswer, op.content, data.isSingle, _optionGroup);
+            option.onTrigger += OnOptionSelected;
             option.SetActive(true);
         }
+
+        _totalCnt.text = _assMgr.GetTotalQuestion().ToString();
+        _currCnt.text = _assMgr.GetFinishQestionCount().ToString();
+        RefreshProgress();
     }
 
     // ======================
@@ -128,7 +155,7 @@ public class TheoryPanel : UIBase
                 btn.RaiseTrigger(InteractionTrigger.Selected);
                 btn.SetPanelActive(true);
             }
-            else 
+            else
             {
                 btn.RaiseTrigger(InteractionTrigger.DeSelect);
                 btn.SetPanelActive(false);
@@ -147,6 +174,27 @@ public class TheoryPanel : UIBase
         SetAssPanelActive(true);
     }
 
+    // 当前题目用户给出答案时
+    private void OnOptionSelected(bool isAnswer)
+    {
+        // 记录这个题的对错
+        int currIdx = _assMgr.currIdx;
+        _assMgr.recordArr[currIdx] = isAnswer ? 1 : 2;
+        
+        // 回答了最后一道题后，出现提交按钮
+        if (_assMgr.GetFinishQestionCount() == _assMgr.GetTotalQuestion()) 
+        {
+            _nextBtn.gameObject.SetActive(false);
+            _submitBtn.gameObject.SetActive(true);
+        }
+
+        // 更新相关UI
+        _currCnt.text = _assMgr.GetFinishQestionCount().ToString();
+        RefreshProgress();
+    }
+
+    // 工具方法
+
     // 设置考核面板显示/关闭特效
     public void SetAssPanelActive(bool active)
     {
@@ -158,5 +206,14 @@ public class TheoryPanel : UIBase
     public void OnHoverEnter()
     {  
         Debug.Log("Enter");
+    }
+
+    /// <summary>
+    /// 更新考题进度条控件
+    /// </summary>
+    private void RefreshProgress()
+    {
+        float target = (float)_assMgr.GetFinishQestionCount() / _assMgr.GetTotalQuestion();
+        _percentSlider.DOValue(target, 1.5f).SetEase(Ease.OutCubic);
     }
 }

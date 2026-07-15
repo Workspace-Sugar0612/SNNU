@@ -146,6 +146,7 @@ GameObject:
   - component: {fileID: 1168193566682970840}
   - component: {fileID: 8702766870247601134}
   - component: {fileID: 2633769942491159109}
+  - component: {fileID: 7782811976781697128}
   m_Layer: 0
   m_Name: Title element
   m_TagString: Untagged
@@ -255,3 +256,31 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &7782811976781697128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3253397944774251799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b06dcac4d7ca74d4da60be7336ea3a82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 4
+  _navigationPkgs:
+  - state: 0
+    uiPkg:
+      sprite: {fileID: 21300000, guid: a6b21aace6acb6d4f83362ccf450575d, type: 3}
+      fontColor: {r: 1, g: 1, b: 1, a: 1}
+  - state: 1
+    uiPkg:
+      sprite: {fileID: 21300000, guid: dfd6be0664642274ba460be21057a834, type: 3}
+      fontColor: {r: 0, g: 0.5803922, b: 1, a: 1}
+  - state: 2
+    uiPkg:
+      sprite: {fileID: 21300000, guid: 526695bd9f95b134785bdbc0acbbacea, type: 3}
+      fontColor: {r: 0.047058824, g: 0.11372549, b: 0.18039216, a: 1}
+  _bgImg: {fileID: 8702766870247601134}
+  _idxTx: {fileID: 3468031279162859002}

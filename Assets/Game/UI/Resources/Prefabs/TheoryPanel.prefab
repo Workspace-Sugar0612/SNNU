@@ -2722,7 +2722,7 @@ MonoBehaviour:
   _totalCnt: {fileID: 968953973256173046}
   _percentSlider: {fileID: 8790556947826254013}
   _titlementContent: {fileID: 2042133127472801699}
-  _titlementPrefab: {fileID: 3253397944774251799, guid: 7e8e8d47960742f44952368c9244bafb,
+  _titlementPrefab: {fileID: 7782811976781697128, guid: 7e8e8d47960742f44952368c9244bafb,
     type: 3}
 --- !u!1 &2663945919045960953
 GameObject:

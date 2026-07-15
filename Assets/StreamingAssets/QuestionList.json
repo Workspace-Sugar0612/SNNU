@@ -21,5 +21,51 @@
         ],
         "analysis": "荧光发射通常发生在分子从第一激发单重态的最低振动能级回落到基态的过程中。",
         "isSingle": true
+    },
+    {
+        "title": "【单选题】在薄膜荧光传感器中，当待测气体分子与激发态的荧光分子发生碰撞导致荧光强度下降，但不改变荧光分子的结构和吸收光谱，这种猝灭属于：",
+        "options": [
+            {
+                "isAnswer": false,
+                "content": "静态猝灭"
+            },
+            {
+                "isAnswer": true,
+                "content": "动态猝灭"
+            },
+            {
+                "isAnswer": false,
+                "content": "内滤效应"
+            },
+            {
+                "isAnswer": false,
+                "content": "光漂白"
+            }
+        ],
+        "analysis": "动态猝灭是猝灭剂与激发态分子碰撞所致，属于物理过程，不改变分子结构；静态猝灭则会形成基态配合物。",
+        "isSingle": true
+    },
+    {
+        "title": "单选题】以下哪个物理量在荧光猝灭过程中会因猝灭剂的存在而缩短？",
+        "options": [
+            {
+                "isAnswer": false,
+                "content": "激发光波长"
+            },
+            {
+                "isAnswer": true,
+                "content": "荧光寿命"
+            },
+            {
+                "isAnswer": false,
+                "content": "斯托克斯位移"
+            },
+            {
+                "isAnswer": false,
+                "content": "量子产率的上限"
+            }
+        ],
+        "analysis": "猝灭剂为激发态分子提供了额外的非辐射跃迁途径，加速了分子返回基态，因此荧光寿命缩短。",
+        "isSingle": true
     }
 ]
