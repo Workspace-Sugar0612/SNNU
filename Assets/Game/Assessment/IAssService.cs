@@ -22,4 +22,7 @@ using UnityEngine;
 
     // 获取当前完成题目数量
     public int GetFinishQestionCount();
+
+    // 设置当前题目索引，在设置之前需要检查
+    public void SetQuestionIndex(int index);
 }

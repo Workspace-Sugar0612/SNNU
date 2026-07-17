@@ -49,6 +49,8 @@ public class AssManager : MonoBehaviour, IAssService, ILocalService
         });
     }
 
+    #region 工具方法
+
     public QuestionData GetCurrQuestion() => questionList[currIdx];
 
     public int GetTotalQuestion() => recordArr.Count();
@@ -59,4 +61,15 @@ public class AssManager : MonoBehaviour, IAssService, ILocalService
         foreach (var i in recordArr) finishedCnt += i == 0 ? 0 : 1;
         return finishedCnt;
     }
+
+    public void SetQuestionIndex(int setIdx)
+    {
+        if (setIdx - 1 >= 0 && setIdx + 1 < _questionList.Count 
+            || (setIdx == 0) 
+            || (setIdx == _questionList.Count - 1)
+           )
+            _currIdx = setIdx;
+    }
+
+    #endregion
 }

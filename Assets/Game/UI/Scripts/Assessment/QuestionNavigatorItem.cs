@@ -1,3 +1,4 @@
+using DG.Tweening;
 using SUG.Essentials;
 using System;
 using System.Collections;
@@ -8,7 +9,9 @@ using UnityEngine.UI;
 
 public enum NavigationState
 {
-    High, Moderate, Low
+    AlreadyAnswered, // 已经作答
+    NotAnswered,  // 未作答
+    Answering // 正在作答
 }
 
 [Serializable] public class NavigationUIPkg
@@ -38,11 +41,24 @@ public class QuestionNavigatorItem : UIButton
     // 服务组件
     [Inject] private IAssService _assMgr;
 
+    // 初始状态/未被点击的状态
+    public NavigationState initialState { get; private set; } = NavigationState.NotAnswered;
+
+    // 事件
+    public event Action<int> onSwitchTopics;
+
+    #region 初始化
+
     public void Setup(string index)
     {
         _idxTx.text = index;
-        CheckStatus();
+        SetNavigationState(NavigationState.NotAnswered);
+
+        // 上层业务事件绑定
+        onClickEnter += OnClickedItem;
     }
+
+    #endregion
 
     /// <summary>
     /// 根据不同的状态，设置UI控件不同的颜色和图片
@@ -53,22 +69,44 @@ public class QuestionNavigatorItem : UIButton
         var pkg = _navigationPkgs.Find(_ => _.state == state);
         if (pkg != null)
         {
+            // 如果不是已经作答状态，那么可以修改他的状态
+            if (state == NavigationState.AlreadyAnswered 
+                || state == NavigationState.NotAnswered)
+                initialState = state;
+
+            // 改变 UI 样式
             _bgImg.sprite = pkg.uiPkg.sprite;
-            _idxTx.color  = pkg.uiPkg.fontColor;
+            //_idxTx.color  = pkg.uiPkg.fontColor;
+            _idxTx.DOColor(pkg.uiPkg.fontColor, 1.5f);
+        }
+    }
+
+    #region 事件
+        
+    /// <summary>
+    /// 当点击了这个Item时触发
+    /// </summary>
+    private void OnClickedItem()
+    {
+        int idx = 0;
+        if (int.TryParse(_idxTx.text, out idx))
+        {
+            onSwitchTopics?.Invoke(idx);
+
+            // 不管之前什么状态，都要变成正在作答状态
+
+            SetNavigationState(NavigationState.Answering);
         }
     }
 
     /// <summary>
-    /// 检查当前item是否需要切换状态
+    /// 当被放弃点击
+    ///【通常是点击后，点击其他了其他item，所以当前item应该变成之前的状态】
     /// </summary>
-    public void CheckStatus()
+    public void OnDeClickedItem()
     {
-        int i = 0;
-        if (int.TryParse(_idxTx.text, out i))
-        {
-            if (_assMgr.currIdx == i) SetNavigationState(NavigationState.High);
-            else if (_assMgr.currIdx + 1 == i || _assMgr.currIdx - 1 == i) SetNavigationState(NavigationState.Moderate);
-            else SetNavigationState(NavigationState.Low);
-        }
+        SetNavigationState(initialState);
     }
+
+    #endregion
 }

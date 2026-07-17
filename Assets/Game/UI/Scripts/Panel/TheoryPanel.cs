@@ -1,5 +1,6 @@
 using DG.Tweening;
 using SUG.Essentials;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -27,10 +28,12 @@ public class TheoryPanel : UIBase
     [SerializeField] private Slider _percentSlider; // 答题进度条
     [SerializeField] private Transform _titlementContent; // 答题题号按钮父类
     [SerializeField] private QuestionNavigatorItem _titlementPrefab; // 答题题号预制体
+    private QuestionNavigatorItem _currNavigatorItem; // 当前的题号item
 
     // Data container
 
     // 题目引导管理容器
+    private readonly List<AssOption> _assOptions = new List<AssOption>();
     private readonly List<QuestionNavigatorItem> _navigationItems = new List<QuestionNavigatorItem>();
 
     // Inject
@@ -40,6 +43,8 @@ public class TheoryPanel : UIBase
 
     // Assessment data.
     private QuestionData _currData;
+
+    #region 生命周期函数
 
     // ======================
     // Life cycle
@@ -51,6 +56,9 @@ public class TheoryPanel : UIBase
         StartCoroutine(Initializaction());
     }
 
+    #endregion
+
+    #region 初始化
     // ======================
     // Initialized
     // ======================
@@ -69,6 +77,13 @@ public class TheoryPanel : UIBase
             item.Setup(i.ToString());
             item.gameObject.SetActive(true);
             _navigationItems.Add(item);
+        }
+
+        // 设置当前选择的题号为0
+        if (_navigationItems.Count > 0)
+        {
+            _currNavigatorItem = _navigationItems[0];
+            _currNavigatorItem.SetNavigationState(NavigationState.Answering);
         }
     }
 
@@ -95,6 +110,9 @@ public class TheoryPanel : UIBase
             btn.onSelect += OnClickTheoryButton;
         }
 
+        foreach (var item in _navigationItems)
+            item.onSwitchTopics += SwitchTopics;
+
         _backBtn.onSelected += OnTheoryBackClick;
         _startTheory.onClickEnter += StartAssessment;
     }
@@ -105,6 +123,15 @@ public class TheoryPanel : UIBase
     /// <param name="data"></param>
     private void LoadData(QuestionData data)
     {
+        // 清理内存
+        foreach (var option in _assOptions)
+        {
+            option.gameObject.SetActive(false);
+            //Destroy(option.gameObject);
+        }
+        _assOptions.Clear();
+
+        // 根据新的data更新UI
         _titleContext.text = data.title;
         foreach (var op in data.options)
         {
@@ -113,13 +140,23 @@ public class TheoryPanel : UIBase
             option.Setup(op.isAnswer, op.content, data.isSingle, _optionGroup);
             option.onTrigger += OnOptionSelected;
             option.SetActive(true);
+
+            // 将创建好的option添加到管理列表中
+            _assOptions.Add(option);
         }
 
         _totalCnt.text = _assMgr.GetTotalQuestion().ToString();
         _currCnt.text = _assMgr.GetFinishQestionCount().ToString();
         RefreshProgress();
-    }
 
+
+        Canvas.ForceUpdateCanvases();
+
+        //LayoutRebuilder.ForceRebuildLayoutImmediate(gameObjec);
+    }
+    #endregion
+
+    #region 事件
     // ======================
     // Event
     // ======================
@@ -177,6 +214,9 @@ public class TheoryPanel : UIBase
     // 当前题目用户给出答案时
     private void OnOptionSelected(bool isAnswer)
     {
+        // 当前题目被标记为已经作答
+        _currNavigatorItem.SetNavigationState(NavigationState.AlreadyAnswered);
+
         // 记录这个题的对错
         int currIdx = _assMgr.currIdx;
         _assMgr.recordArr[currIdx] = isAnswer ? 1 : 2;
@@ -193,7 +233,25 @@ public class TheoryPanel : UIBase
         RefreshProgress();
     }
 
-    // 工具方法
+    /// <summary>
+    /// 切换题目
+    /// </summary>
+    private void SwitchTopics(int topicIndex)
+    {
+        // 设置考试管理器的当前的题目列表索引
+        // 设置新的题目/UI更新
+        _assMgr.SetQuestionIndex(topicIndex);
+        LoadData(_assMgr.GetCurrQuestion());
+
+        // 将上一个题号的控件状态恢复到初始状态
+        // 设置新的题号item
+        _currNavigatorItem.OnDeClickedItem();
+        _currNavigatorItem = _navigationItems[topicIndex];
+    }
+
+    #endregion
+
+    #region 工具方法
 
     // 设置考核面板显示/关闭特效
     public void SetAssPanelActive(bool active)
@@ -216,4 +274,6 @@ public class TheoryPanel : UIBase
         float target = (float)_assMgr.GetFinishQestionCount() / _assMgr.GetTotalQuestion();
         _percentSlider.DOValue(target, 1.5f).SetEase(Ease.OutCubic);
     }
+
+    #endregion
 }
