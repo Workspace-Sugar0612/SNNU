@@ -49,6 +49,14 @@ public class AssManager : MonoBehaviour, IAssService, ILocalService
         });
     }
 
+    public void ResetData()
+    {
+        _recordArr = null;
+        _recordArr = new int[_questionList.Count];
+
+        _currIdx = 0;
+    }
+
     #region 工具方法
 
     public QuestionData GetCurrQuestion() => questionList[currIdx];

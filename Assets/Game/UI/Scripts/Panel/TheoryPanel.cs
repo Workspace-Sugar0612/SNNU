@@ -21,14 +21,16 @@ public class TheoryPanel : UIBase
     [SerializeField] private UIButton _prevBtn, _nextBtn, _submitBtn; // 上一题按钮，下一题按钮，提交按钮
     [SerializeField] private ToggleGroup _optionGroup; // 考核选择按钮父物体
     [SerializeField] private AssOption _optionPrefab; // 考核选择按钮预制体
+    [SerializeField] private RectTransform _assRect; // 【考试面板】的RectTransform, 用来刷新layout，不让其更新内容后UI控件错位。
 
-    [Header("答题进度区域")]
+    [Header("答题引导区域")]
     [SerializeField] private TextMeshProUGUI _currCnt; // 当前完成的题目数量
     [SerializeField] private TextMeshProUGUI _totalCnt; // 全部题目数量
     [SerializeField] private Slider _percentSlider; // 答题进度条
     [SerializeField] private Transform _titlementContent; // 答题题号按钮父类
     [SerializeField] private QuestionNavigatorItem _titlementPrefab; // 答题题号预制体
     private QuestionNavigatorItem _currNavigatorItem; // 当前的题号item
+    [SerializeField] private RectTransform _naviRect; // 【考试引导面板】的RectTransform, 用来刷新layout，不让其更新内容后UI控件错位。
 
     // Data container
 
@@ -42,7 +44,8 @@ public class TheoryPanel : UIBase
     [Inject] private IAssService _assMgr;
 
     // Assessment data.
-    private QuestionData _currData;
+    private QuestionData _currData; // 当前题目内容数据
+    private bool _isAssing = false; // 是否在考试
 
     #region 生命周期函数
 
@@ -127,7 +130,7 @@ public class TheoryPanel : UIBase
         foreach (var option in _assOptions)
         {
             option.gameObject.SetActive(false);
-            //Destroy(option.gameObject);
+            //Destroy(option);
         }
         _assOptions.Clear();
 
@@ -145,15 +148,41 @@ public class TheoryPanel : UIBase
             _assOptions.Add(option);
         }
 
+        // 更新题目进度窗口的【已答数/总共数】控件的信息内容。
         _totalCnt.text = _assMgr.GetTotalQuestion().ToString();
         _currCnt.text = _assMgr.GetFinishQestionCount().ToString();
         RefreshProgress();
-
-
+        
+        // 更新Canvas，使面板的Layout可以正常的排布UI控件
         Canvas.ForceUpdateCanvases();
-
-        //LayoutRebuilder.ForceRebuildLayoutImmediate(gameObjec);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(_assRect);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(_naviRect);
     }
+    #endregion
+
+    #region Reset
+
+    // 考核内容重置
+    private void AssReset()
+    {
+        // 重置AssManager
+        _assMgr.ResetData();
+
+        // 重新加载题目
+        LoadData(_assMgr.GetCurrQuestion());
+
+        // 重置引导面板中的控件
+        foreach (var ui in _navigationItems)
+            ui.SetNavigationState(NavigationState.NotAnswered);
+
+        // 设置当前选择的题号为0
+        if (_navigationItems.Count > 0)
+        {
+            _currNavigatorItem = _navigationItems[0];
+            _currNavigatorItem.SetNavigationState(NavigationState.Answering);
+        }
+    }
+
     #endregion
 
     #region 事件
@@ -169,22 +198,35 @@ public class TheoryPanel : UIBase
         _sceneMgr.LoadSceneAsync(_gameCfg.startScene);
     }
 
+    // 点击返回按钮放弃考试时
     private void OnAssBack()
     {
+        // 标记为【未考试】状态
+        _isAssing = false;
 
+        // 关闭考试界面, 返回考核模式进入界面面板
+        SetAssPanelActive(false);
+        OnClickTheoryButton(TheoryMode.TheoryAssessment);
     }
 
     private void OnTheoryBackClick(TheoryBackMode mode)
     {
-        if ((mode & TheoryBackMode.Normal) != 0) OnNormalBack();
+        if (mode == TheoryBackMode.Normal) OnNormalBack();
         else if (mode == TheoryBackMode.Assess) OnAssBack();
         else { }
     }
 
-    // Theory buttons selected event.
+    // 点击左边按钮列表选择不同的理论面板
     private void OnClickTheoryButton(TheoryMode mode)
     {
+        // 如果当前在考试不可对其进行点击
+        if (_isAssing == true) return;
+
+        // 在不同的理论模式下，同一个【返回】按钮执行的功能不同
+        // 所以需要设置【返回】按钮的功能
         _gameMgr.currTheoryBackMode = (mode & TheoryMode.TheoryAssessment) == 0 ? TheoryBackMode.Normal : TheoryBackMode.Assess;
+
+        // 切换不同的理论按钮
         foreach (var btn in _theoryBtns)
         {
             if ((mode & btn.currMode) != 0)
@@ -200,15 +242,21 @@ public class TheoryPanel : UIBase
         }
     }
     
-    // Theory assessment start.
+    // 点击开始考核按钮
     private void StartAssessment()
     {
-        foreach (var btn in _theoryBtns)
+        foreach (TheoryElementButton btn in _theoryBtns)
         {
             btn.RaiseTrigger(InteractionTrigger.DeSelect);
             btn.SetPanelActive(false);
         }
+
+        // 重置考核界面
         SetAssPanelActive(true);
+        AssReset();
+
+        // 标记为正在考试
+        _isAssing = true;
     }
 
     // 当前题目用户给出答案时

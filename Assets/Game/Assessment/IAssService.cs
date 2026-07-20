@@ -25,4 +25,7 @@ using UnityEngine;
 
     // 设置当前题目索引，在设置之前需要检查
     public void SetQuestionIndex(int index);
+
+    // 重置
+    public void ResetData();
 }
