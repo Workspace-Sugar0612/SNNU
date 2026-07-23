@@ -9,7 +9,8 @@ public enum GameType
      Theory
 }
 
-public sealed class GameMode : MonoBehaviour, IGlobalService, IGameService
+[Service(ServiceLifetime.Global)]
+public sealed class GameMode : MonoBehaviour, IGameService
 {
     // ——  Config variable ——
     //[Header("Is it unlock parctic.")]

@@ -155,10 +155,10 @@ MonoBehaviour:
   _otherTrigger: 0
   alwaysActive: 0
   _normalScale: {x: 1, y: 1, z: 1}
-  _hoverScale: {x: 1.1, y: 1.1, z: 1.1}
-  _selectScale: {x: 0.9, y: 0.9, z: 0.9}
-  hoverDur: 1
-  clickDur: 0.3
+  _zoominScale: {x: 1.1, y: 1.1, z: 1.1}
+  _zoomoutScale: {x: 0.9, y: 0.9, z: 0.9}
+  zoominDur: 1
+  zoomoutDur: 0.3
 --- !u!114 &8205295206238027537
 MonoBehaviour:
   m_ObjectHideFlags: 0

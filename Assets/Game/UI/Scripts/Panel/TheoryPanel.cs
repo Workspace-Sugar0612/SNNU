@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -31,6 +32,11 @@ public class TheoryPanel : UIBase
     [SerializeField] private QuestionNavigatorItem _titlementPrefab; // 答题题号预制体
     private QuestionNavigatorItem _currNavigatorItem; // 当前的题号item
     [SerializeField] private RectTransform _naviRect; // 【考试引导面板】的RectTransform, 用来刷新layout，不让其更新内容后UI控件错位。
+
+    [Header("考试结果面板区域")]
+    [SerializeField] private UIPanel _passPanel; // 通过面板
+    [SerializeField] private UIPanel _failPanel; // 不通过面板
+    [SerializeField] private UIButton _passOkBtn; // 考核结束考核按钮
 
     // Data container
 
@@ -66,6 +72,9 @@ public class TheoryPanel : UIBase
     // Initialized
     // ======================
 
+    /// <summary>
+    /// 数据初始化
+    /// </summary>
     private void DataInitialization()
     {
         _currData = _assMgr.GetCurrQuestion();
@@ -90,6 +99,10 @@ public class TheoryPanel : UIBase
         }
     }
 
+    /// <summary>
+    /// 成员变量/控件初始化
+    /// </summary>
+    /// <returns></returns>
     IEnumerator Initializaction()
     {
         yield return null;
@@ -101,11 +114,21 @@ public class TheoryPanel : UIBase
         // 初始化考核面板
         SetAssPanelActive(false);
 
+        // 考试结果面板隐藏
+        _passPanel.RaiseTrigger(InteractionTrigger.DeSelect);
+        _passPanel.gameObject.SetActive(false);
+
+        _failPanel.RaiseTrigger(InteractionTrigger.DeSelect);
+        _failPanel.gameObject.SetActive(false);
+
         // 提交按钮初始化时需要隐藏
         _nextBtn.gameObject.SetActive(true);
         _submitBtn.gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// 事件初始化
+    /// </summary>
     private void EventInitialization()
     {
         foreach (TheoryElementButton btn in _theoryBtns)
@@ -117,7 +140,11 @@ public class TheoryPanel : UIBase
             item.onSwitchTopics += SwitchTopics;
 
         _backBtn.onSelected += OnTheoryBackClick;
+        _nextBtn.onClickEnter += NextQuestion;
+        _submitBtn.onClickEnter += SubmitTheAnswer;
+        _prevBtn.onClickEnter += PrevQuestion;
         _startTheory.onClickEnter += StartAssessment;
+        _passOkBtn.onClickEnter += BackStartScene;
     }
 
     /// <summary>
@@ -135,6 +162,7 @@ public class TheoryPanel : UIBase
         _assOptions.Clear();
 
         // 根据新的data更新UI
+        var pkg = _assMgr.recordArr[_assMgr.currIdx];
         _titleContext.text = data.title;
         foreach (var op in data.options)
         {
@@ -143,6 +171,7 @@ public class TheoryPanel : UIBase
             option.Setup(op.isAnswer, op.content, data.isSingle, _optionGroup);
             option.onTrigger += OnOptionSelected;
             option.SetActive(true);
+            option.Verify(pkg?.selectContents);
 
             // 将创建好的option添加到管理列表中
             _assOptions.Add(option);
@@ -158,6 +187,7 @@ public class TheoryPanel : UIBase
         LayoutRebuilder.ForceRebuildLayoutImmediate(_assRect);
         LayoutRebuilder.ForceRebuildLayoutImmediate(_naviRect);
     }
+
     #endregion
 
     #region Reset
@@ -190,16 +220,16 @@ public class TheoryPanel : UIBase
     // Event
     // ======================
 
-    // Theory back button selected event.
-    private void OnNormalBack()
+    // 返回开始选择界面
+    private void BackStartScene()
     {
         var _gameCfg = _gameMgr.gameSetting;
 
         _sceneMgr.LoadSceneAsync(_gameCfg.startScene);
     }
 
-    // 点击返回按钮放弃考试时
-    private void OnAssBack()
+    // 放弃考试时
+    private void LetgoAss()
     {
         // 标记为【未考试】状态
         _isAssing = false;
@@ -211,8 +241,8 @@ public class TheoryPanel : UIBase
 
     private void OnTheoryBackClick(TheoryBackMode mode)
     {
-        if (mode == TheoryBackMode.Normal) OnNormalBack();
-        else if (mode == TheoryBackMode.Assess) OnAssBack();
+        if (mode == TheoryBackMode.Normal) BackStartScene();
+        else if (mode == TheoryBackMode.Assess) LetgoAss();
         else { }
     }
 
@@ -245,6 +275,7 @@ public class TheoryPanel : UIBase
     // 点击开始考核按钮
     private void StartAssessment()
     {
+        // 更新左侧的理论按钮
         foreach (TheoryElementButton btn in _theoryBtns)
         {
             btn.RaiseTrigger(InteractionTrigger.DeSelect);
@@ -260,15 +291,24 @@ public class TheoryPanel : UIBase
     }
 
     // 当前题目用户给出答案时
-    private void OnOptionSelected(bool isAnswer)
+    private void OnOptionSelected(bool isOn, bool isAnswer, string content)
     {
         // 当前题目被标记为已经作答
         _currNavigatorItem.SetNavigationState(NavigationState.AlreadyAnswered);
 
-        // 记录这个题的对错
+        // 记录
         int currIdx = _assMgr.currIdx;
-        _assMgr.recordArr[currIdx] = isAnswer ? 1 : 2;
-        
+        int answer = isAnswer ? 1 : 2;
+        bool isSingle = _assMgr.GetCurrQuestion().isSingle;
+
+        if (_assMgr.recordArr[currIdx] == null)
+            _assMgr.recordArr[currIdx] = new TopicRecordPkg();
+
+        _assMgr.recordArr[currIdx].Record(isOn, content, isSingle);
+
+        // 判断该题目的对错
+        _assMgr.ValidateIndexTitle(currIdx);
+
         // 回答了最后一道题后，出现提交按钮
         if (_assMgr.GetFinishQestionCount() == _assMgr.GetTotalQuestion()) 
         {
@@ -281,9 +321,7 @@ public class TheoryPanel : UIBase
         RefreshProgress();
     }
 
-    /// <summary>
-    /// 切换题目
-    /// </summary>
+    // 切换题目
     private void SwitchTopics(int topicIndex)
     {
         // 设置考试管理器的当前的题目列表索引
@@ -295,6 +333,44 @@ public class TheoryPanel : UIBase
         // 设置新的题号item
         _currNavigatorItem.OnDeClickedItem();
         _currNavigatorItem = _navigationItems[topicIndex];
+        _currNavigatorItem.SetNavigationState(NavigationState.Answering);
+    }
+
+    // 下一题
+    private void NextQuestion()
+    {
+        int idx = _assMgr.NextQuestion();
+        SwitchTopics(idx);
+    }
+
+    // 上一题
+    private void PrevQuestion()
+    {
+        int idx = _assMgr.PrevQuestion();
+        SwitchTopics(idx);
+    }
+
+    // 提交答题(提交按钮点击事件)
+    private void SubmitTheAnswer()
+    {
+        // 检查答题情况
+        bool isAllCorrect = true;
+        foreach (var i in _assMgr.recordArr)
+            isAllCorrect &= (i.mark == 1);
+
+        // 考核通过
+        if (isAllCorrect)
+        {
+            // 开启实训模式
+            _gameMgr.isPar = true;
+
+            //显示通过面板
+            _passPanel.RaiseTrigger(InteractionTrigger.Selected);
+            _passPanel.gameObject.SetActive(true);
+            return;
+        }
+        
+        // 考核不通过。
     }
 
     #endregion
@@ -307,11 +383,6 @@ public class TheoryPanel : UIBase
         InteractionTrigger trigger = active ? InteractionTrigger.Selected : InteractionTrigger.DeSelect;
         _assPanel.RaiseTrigger(trigger);
         _assPanel.gameObject.SetActive(active);
-    }
-
-    public void OnHoverEnter()
-    {  
-        Debug.Log("Enter");
     }
 
     /// <summary>

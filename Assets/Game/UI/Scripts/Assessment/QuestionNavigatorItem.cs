@@ -95,7 +95,7 @@ public class QuestionNavigatorItem : UIButton
 
             // 不管之前什么状态，都要变成正在作答状态
 
-            SetNavigationState(NavigationState.Answering);
+            // SetNavigationState(NavigationState.Answering);
         }
     }
 

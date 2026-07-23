@@ -8,7 +8,8 @@ using System.Linq;
 /// <summary>
 ///  考核模块管理器
 /// </summary>
-public class AssManager : MonoBehaviour, IAssService, ILocalService
+[Service(ServiceLifetime.Scene)]
+public class AssManager : MonoBehaviour, IAssService
 {
     // 当前列表索引
     private int _currIdx = 0;
@@ -19,8 +20,8 @@ public class AssManager : MonoBehaviour, IAssService, ILocalService
     public List<QuestionData> questionList { get => _questionList; }
 
     // 答题进度记录容器
-    private int[] _recordArr;
-    public int[] recordArr { get => _recordArr; }
+    private TopicRecordPkg[] _recordArr;
+    public TopicRecordPkg[] recordArr { get => _recordArr; }
 
     // 题库位置路径
     private readonly string _titlePath = Application.streamingAssetsPath + "/QuestionList.json";
@@ -45,14 +46,14 @@ public class AssManager : MonoBehaviour, IAssService, ILocalService
             _questionList = JsonMapper.ToObject<List<QuestionData>>(t);
 
             // 记录有多少题目
-            _recordArr = new int[_questionList.Count];
+            _recordArr = new TopicRecordPkg[_questionList.Count];
         });
     }
 
     public void ResetData()
     {
         _recordArr = null;
-        _recordArr = new int[_questionList.Count];
+        _recordArr = new TopicRecordPkg[_questionList.Count];
 
         _currIdx = 0;
     }
@@ -66,7 +67,10 @@ public class AssManager : MonoBehaviour, IAssService, ILocalService
     public int GetFinishQestionCount()
     {
         int finishedCnt = 0;
-        foreach (var i in recordArr) finishedCnt += i == 0 ? 0 : 1;
+
+        foreach (var i in recordArr) 
+            finishedCnt += i?.mark == 0 ? 0 : 1;
+
         return finishedCnt;
     }
 
@@ -77,6 +81,29 @@ public class AssManager : MonoBehaviour, IAssService, ILocalService
             || (setIdx == _questionList.Count - 1)
            )
             _currIdx = setIdx;
+    }
+
+    public int NextQuestion()
+    {
+        _currIdx = (_currIdx + 1) % _questionList.Count;
+        return _currIdx;
+    }
+
+    public int PrevQuestion()
+    {
+        _currIdx = (_currIdx - 1 + _questionList.Count) % _questionList.Count;
+        return _currIdx;
+    }
+
+    public void ValidateIndexTitle(int index)
+    {
+        var data = _questionList[index];
+        foreach (var op in data.options)
+        {
+            bool a = op.isAnswer;
+            bool b = _recordArr[index].selectContents.Contains(op.content);
+            _recordArr[index].mark = ((a && b) || (!a && !b)) ? 1 : 2;
+        }
     }
 
     #endregion
