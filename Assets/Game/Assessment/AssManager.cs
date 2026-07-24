@@ -47,6 +47,9 @@ public class AssManager : MonoBehaviour, IAssService
 
             // 记录有多少题目
             _recordArr = new TopicRecordPkg[_questionList.Count];
+
+            for (int i = 0; i < recordArr.Length; ++i)
+                recordArr[i] = new TopicRecordPkg();
         });
     }
 
@@ -62,14 +65,29 @@ public class AssManager : MonoBehaviour, IAssService
 
     public QuestionData GetCurrQuestion() => questionList[currIdx];
 
+    public QuestionData GetIndexQuestion(int index)
+    {
+        QuestionData data = null;
+
+        if (index >= 0 && index < questionList.Count())
+            data = questionList[index];
+        
+        return data;
+    }
+
     public int GetTotalQuestion() => recordArr.Count();
 
     public int GetFinishQestionCount()
     {
         int finishedCnt = 0;
 
-        foreach (var i in recordArr) 
-            finishedCnt += i?.mark == 0 ? 0 : 1;
+        foreach (var i in recordArr)
+        {
+            if (i == null)
+                continue;
+
+            finishedCnt += i.mark == 0 ? 0 : 1;
+        }
 
         return finishedCnt;
     }

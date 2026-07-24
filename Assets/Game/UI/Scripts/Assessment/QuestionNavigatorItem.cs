@@ -3,7 +3,9 @@ using SUG.Essentials;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -38,21 +40,22 @@ public class QuestionNavigatorItem : UIButton
     [SerializeField] private Image _bgImg;
     [SerializeField] private TextMeshProUGUI _idxTx;
 
-    // 服务组件
-    [Inject] private IAssService _assMgr;
-
-    // 初始状态/未被点击的状态
-    public NavigationState initialState { get; private set; } = NavigationState.NotAnswered;
-
     // 事件
     public event Action<int> onSwitchTopics;
 
+    // 成员变量
+
+    private int _idx; // 这个引导负责的题号
+    private NavigationState _currState; // 当前状态
+    [Inject] private IAssService _assMgr; // 考试管理器
+
     #region 初始化
 
-    public void Setup(string index)
+    public void Setup(int index)
     {
-        _idxTx.text = index;
-        SetNavigationState(NavigationState.NotAnswered);
+        _idx = index;
+        _idxTx.text = (index + 1).ToString();
+        SetNaviStateAndRefresh(NavigationState.NotAnswered);
 
         // 上层业务事件绑定
         onClickEnter += OnClickedItem;
@@ -64,21 +67,34 @@ public class QuestionNavigatorItem : UIButton
     /// 根据不同的状态，设置UI控件不同的颜色和图片
     /// </summary>
     /// <param name="state"></param>
-    public void SetNavigationState(NavigationState state)
+    private void SetNavigationState(NavigationState state)
     {
-        var pkg = _navigationPkgs.Find(_ => _.state == state);
+        _currState = state;
+    }
+
+    /// <summary>
+    /// 更新UI
+    /// </summary>
+    public void RefreshUI()
+    {
+        var pkg = _navigationPkgs.Find(_ => _.state == _currState);
         if (pkg != null)
         {
-            // 如果不是已经作答状态，那么可以修改他的状态
-            if (state == NavigationState.AlreadyAnswered 
-                || state == NavigationState.NotAnswered)
-                initialState = state;
-
             // 改变 UI 样式
             _bgImg.sprite = pkg.uiPkg.sprite;
             //_idxTx.color  = pkg.uiPkg.fontColor;
             _idxTx.DOColor(pkg.uiPkg.fontColor, 1.5f);
         }
+    }
+
+    /// <summary>
+    /// 更新状态 + 更新UI
+    /// </summary>
+    /// <param name="state"></param>
+    public void SetNaviStateAndRefresh(NavigationState state)
+    {
+        SetNavigationState(state);
+        RefreshUI();
     }
 
     #region 事件
@@ -88,15 +104,11 @@ public class QuestionNavigatorItem : UIButton
     /// </summary>
     private void OnClickedItem()
     {
-        int idx = 0;
-        if (int.TryParse(_idxTx.text, out idx))
-        {
-            onSwitchTopics?.Invoke(idx);
+        onSwitchTopics?.Invoke(_idx);
 
-            // 不管之前什么状态，都要变成正在作答状态
+        // 不管之前什么状态，都要变成正在作答状态
 
-            // SetNavigationState(NavigationState.Answering);
-        }
+        // SetNavigationState(NavigationState.Answering);
     }
 
     /// <summary>
@@ -105,7 +117,22 @@ public class QuestionNavigatorItem : UIButton
     /// </summary>
     public void OnDeClickedItem()
     {
-        SetNavigationState(initialState);
+        bool isAnswer = false;
+        if (_idx >= 0 && _idx < _assMgr.recordArr.Count())
+        {
+            var re = _assMgr.recordArr[_idx];
+            if (re != null && re.selectContents != null)
+            {
+                // 表示已经作答
+                // 如果该题目的selectContents为0，说明没有被记录过
+                isAnswer = re.selectContents.Count > 0;
+            }
+        }
+
+        // 更新状态
+        NavigationState state = isAnswer ? NavigationState.AlreadyAnswered : NavigationState.NotAnswered;
+        SetNavigationState(state);
+        RefreshUI();
     }
 
     #endregion

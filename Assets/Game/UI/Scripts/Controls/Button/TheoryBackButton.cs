@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class TheoryBackButton : UIButton
 {
-    private TheoryBackMode _currBackMode = TheoryBackMode.Normal;
+    //private TheoryBackMode _currBackMode = TheoryBackMode.Normal;
 
     // 点击事件
     public event Action<TheoryBackMode> onSelected;

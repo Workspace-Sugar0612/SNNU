@@ -86,7 +86,7 @@ public class TheoryPanel : UIBase
         for (int i = 0; i < _assMgr.questionList.Count; ++i)
         {
             var item = Essentials.Instantiate(_titlementPrefab, _titlementContent);
-            item.Setup(i.ToString());
+            item.Setup(i);
             item.gameObject.SetActive(true);
             _navigationItems.Add(item);
         }
@@ -95,7 +95,7 @@ public class TheoryPanel : UIBase
         if (_navigationItems.Count > 0)
         {
             _currNavigatorItem = _navigationItems[0];
-            _currNavigatorItem.SetNavigationState(NavigationState.Answering);
+            _currNavigatorItem.SetNaviStateAndRefresh(NavigationState.Answering);
         }
     }
 
@@ -203,13 +203,13 @@ public class TheoryPanel : UIBase
 
         // 重置引导面板中的控件
         foreach (var ui in _navigationItems)
-            ui.SetNavigationState(NavigationState.NotAnswered);
+            ui.SetNaviStateAndRefresh(NavigationState.NotAnswered);
 
         // 设置当前选择的题号为0
         if (_navigationItems.Count > 0)
         {
             _currNavigatorItem = _navigationItems[0];
-            _currNavigatorItem.SetNavigationState(NavigationState.Answering);
+            _currNavigatorItem.SetNaviStateAndRefresh(NavigationState.Answering);
         }
     }
 
@@ -293,9 +293,6 @@ public class TheoryPanel : UIBase
     // 当前题目用户给出答案时
     private void OnOptionSelected(bool isOn, bool isAnswer, string content)
     {
-        // 当前题目被标记为已经作答
-        _currNavigatorItem.SetNavigationState(NavigationState.AlreadyAnswered);
-
         // 记录
         int currIdx = _assMgr.currIdx;
         int answer = isAnswer ? 1 : 2;
@@ -333,7 +330,7 @@ public class TheoryPanel : UIBase
         // 设置新的题号item
         _currNavigatorItem.OnDeClickedItem();
         _currNavigatorItem = _navigationItems[topicIndex];
-        _currNavigatorItem.SetNavigationState(NavigationState.Answering);
+        _currNavigatorItem.SetNaviStateAndRefresh(NavigationState.Answering);
     }
 
     // 下一题
@@ -356,7 +353,7 @@ public class TheoryPanel : UIBase
         // 检查答题情况
         bool isAllCorrect = true;
         foreach (var i in _assMgr.recordArr)
-            isAllCorrect &= (i.mark == 1);
+            isAllCorrect &= (i?.mark == 1);
 
         // 考核通过
         if (isAllCorrect)

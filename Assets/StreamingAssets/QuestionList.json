@@ -4,19 +4,19 @@
         "options": [
             {
                 "isAnswer": true,
-                "content": "单重激发态的最低振动能级 → 基态"
+                "content": "A. 单重激发态的最低振动能级 → 基态"
             },
             {
                 "isAnswer": false,
-                "content": "三重激发态 → 基态"
+                "content": "B. 三重激发态 → 基态"
             },
             {
                 "isAnswer": false,
-                "content": "基态 → 单重激发态"
+                "content": "C. 基态 → 单重激发态"
             },
             {
                 "isAnswer": false,
-                "content": "单重激发态 → 三重激发态"
+                "content": "D. 单重激发态 → 三重激发态"
             }
         ],
         "analysis": "荧光发射通常发生在分子从第一激发单重态的最低振动能级回落到基态的过程中。",
@@ -27,19 +27,19 @@
         "options": [
             {
                 "isAnswer": false,
-                "content": "静态猝灭"
+                "content": "A. 静态猝灭"
             },
             {
                 "isAnswer": true,
-                "content": "动态猝灭"
+                "content": "B. 动态猝灭"
             },
             {
                 "isAnswer": false,
-                "content": "内滤效应"
+                "content": "C. 内滤效应"
             },
             {
                 "isAnswer": false,
-                "content": "光漂白"
+                "content": "D. 光漂白"
             }
         ],
         "analysis": "动态猝灭是猝灭剂与激发态分子碰撞所致，属于物理过程，不改变分子结构；静态猝灭则会形成基态配合物。",
@@ -50,19 +50,19 @@
         "options": [
             {
                 "isAnswer": false,
-                "content": "激发光波长"
+                "content": "A. 激发光波长"
             },
             {
                 "isAnswer": true,
-                "content": "荧光寿命"
+                "content": "B. 荧光寿命"
             },
             {
                 "isAnswer": false,
-                "content": "斯托克斯位移"
+                "content": "C. 斯托克斯位移"
             },
             {
                 "isAnswer": false,
-                "content": "量子产率的上限"
+                "content": "D. 量子产率的上限"
             }
         ],
         "analysis": "猝灭剂为激发态分子提供了额外的非辐射跃迁途径，加速了分子返回基态，因此荧光寿命缩短。",
@@ -73,19 +73,19 @@
         "options": [
             {
                 "isAnswer": false,
-                "content": "Lambert-Beer定律"
+                "content": "A. Lambert-Beer定律"
             },
             {
                 "isAnswer": true,
-                "content": "Stern-Volmer方程"
+                "content": "B. Stern-Volmer方程"
             },
             {
                 "isAnswer": false,
-                "content": "Heisenberg测不准原理"
+                "content": "C. Heisenberg测不准原理"
             },
             {
                 "isAnswer": false,
-                "content": "Marcus理论"
+                "content": "D. Marcus理论"
             }
         ],
         "analysis": "Stern-Volmer方程（I0/I=1+Ksv[Q]）是描述荧光猝灭程度与猝灭剂浓度关系的基本公式。",
@@ -96,19 +96,19 @@
         "options": [
             {
                 "isAnswer": true,
-                "content": "传感器的灵敏度很高"
+                "content": "A. 传感器的灵敏度很高"
             },
             {
                 "isAnswer": false,
-                "content": "传感器的响应速度很慢"
+                "content": "B. 传感器的响应速度很慢"
             },
             {
                 "isAnswer": false,
-                "content": "背景荧光很强"
+                "content": "C. 背景荧光很强"
             },
             {
                 "isAnswer": false,
-                "content": "薄膜厚度很大"
+                "content": "D. 薄膜厚度很大"
             }
         ],
         "analysis": "Ksv[Q]是猝灭常数，它的大小直接反映了荧光物质对猝灭剂（待测气体）的敏感程度。Ksv[Q]越大，表示微小的浓度变化就能引起较大的荧光强度变化，即灵敏度高。",
@@ -119,19 +119,19 @@
         "options": [
             {
                 "isAnswer": false,
-                "content": "过滤掉样品发射的荧光，只让激发光通过"
+                "content": "A. 过滤掉样品发射的荧光，只让激发光通过"
             },
             {
                 "isAnswer": true,
-                "content": "选择特定波长的激发光，去除杂散光干扰"
+                "content": "B. 选择特定波长的激发光，去除杂散光干扰"
             },
             {
                 "isAnswer": false,
-                "content": "增强激发光的强度"
+                "content": "C. 增强激发光的强度"
             },
             {
                 "isAnswer": false,
-                "content": "保护薄膜材料不被强光破坏"
+                "content": "D. 保护薄膜材料不被强光破坏"
             }
         ],
         "analysis": "激发滤光片位于光源和样品之间，其作用是净化激发光，确保只有特定波长的光照射到薄膜上。",
@@ -142,19 +142,19 @@
         "options": [
             {
                 "isAnswer": false,
-                "content": "旋涂法"
+                "content": "A. 旋涂法"
             },
             {
                 "isAnswer": true,
-                "content": "硅烷化反应"
+                "content": "B. 硅烷化反应"
             },
             {
                 "isAnswer": false,
-                "content": "物理涂覆"
+                "content": "C. 物理涂覆"
             },
             {
                 "isAnswer": false,
-                "content": "Langmuir-Blodgett膜技术"
+                "content": "D. Langmuir-Blodgett膜技术"
             }
         ],
         "analysis": "硅烷化反应是利用化学键将荧光分子连接到衬底表面，属于化学修饰。A、C、D通常属于物理方法。",
@@ -165,19 +165,19 @@
         "options": [
             {
                 "isAnswer": true,
-                "content": "薄膜材料的孔径和透氧率"
+                "content": "A. 薄膜材料的孔径和透氧率"
             },
             {
                 "isAnswer": true,
-                "content": "激发光源的稳定性"
+                "content": "B. 激发光源的稳定性"
             },
             {
                 "isAnswer": true,
-                "content": "环境温度的变化"
+                "content": "C. 环境温度的变化"
             },
             {
                 "isAnswer": true,
-                "content": "滤光片的透过率曲线"
+                "content": "D. 滤光片的透过率曲线"
             }
         ],
         "analysis": "A. 影响气体扩散速度（响应时间）；B. 影响激发效率；C. 会影响分子运动和猝灭速率；D. 影响激发光的纯度和信噪比。因此，器件结构的每一个细节都会影响整体性能。",
@@ -188,19 +188,19 @@
         "options": [
             {
                 "isAnswer": false,
-                "content": "动态猝灭"
+                "content": "A. 动态猝灭"
             },
             {
                 "isAnswer": false,
-                "content": "静态猝灭"
+                "content": "B. 静态猝灭"
             },
             {
                 "isAnswer": true,
-                "content": "光漂白"
+                "content": "C. 光漂白"
             },
             {
                 "isAnswer": false,
-                "content": "内滤效应"
+                "content": "D. 内滤效应"
             }
         ],
         "analysis": "光漂白是指荧光分子在光照下由于发生光化学反应而导致的不可逆的荧光强度衰减。这与由分析物引起的可逆猝灭不同。",
@@ -211,19 +211,19 @@
         "options": [
             {
                 "isAnswer": false,
-                "content": "光诱导电子转移(PET)"
+                "content": "A. 光诱导电子转移(PET)"
             },
             {
                 "isAnswer": false,
-                "content": "共振能量转移(FRET)"
+                "content": "B. 共振能量转移(FRET)"
             },
             {
                 "isAnswer": true,
-                "content": "内滤效应"
+                "content": "C. 内滤效应"
             },
             {
                 "isAnswer": false,
-                "content": "激基缔合物形成"
+                "content": "D. 激基缔合物形成"
             }
         ],
         "analysis": "内滤效应是一种表观现象，指样品中的其他组分吸收了激发光或荧光，导致检测到的荧光强度降低，并非荧光分子本身被猝灭。",

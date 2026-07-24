@@ -10,7 +10,7 @@ public class TopicRecordPkg
     /// 答题情况记录：
     /// 0: 未作答， 1：正确， 2：失败
     /// </summary>
-    public int mark;
+    public int mark = 0;
 
     /// <summary>
     /// 选择的内容
@@ -18,7 +18,10 @@ public class TopicRecordPkg
     public List<string> selectContents = new List<string>();
 
     // 构造函数
-    public TopicRecordPkg() { }
+    public TopicRecordPkg()
+    {
+        mark = 0;
+    }
 
     public TopicRecordPkg(int mark, List<string> content)
     {
@@ -61,6 +64,9 @@ public class TopicRecordPkg
 
     // 获取当前题目
     public QuestionData GetCurrQuestion();
+
+    // 获取index索引的题目
+    public QuestionData GetIndexQuestion(int index);
 
     // 获得总题目数量
     public int GetTotalQuestion();
