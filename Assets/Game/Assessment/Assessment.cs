@@ -9,6 +9,7 @@ public class QuestionData
     public List<OptionData> options = new List<OptionData>();
     public string analysis;
     public bool isSingle = true;
+    public float score = 0.0f;
 }
 
 // 选择题数据

@@ -1,5 +1,7 @@
 using SUG.Essentials;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 /// <summary>
 /// 单个题目记录包
@@ -36,7 +38,8 @@ public class TopicRecordPkg
     /// <param name="content">选项内容</param>
     /// <param name="isSingle">这个包是否为单选题</param>
     public void Record(bool isSave, string content, bool isSingle)
-    { 
+    {
+        UnityEngine.Debug.Log($"isSave: {isSave}, content: {content}, isSingle: {isSingle}");
         // 如果这个题时单选题
         // 那么需要把之前的记录内容列表清空
         if (isSingle)
@@ -61,6 +64,15 @@ public class TopicRecordPkg
     /// </summary>
     public TopicRecordPkg[] recordArr { get; }
     public List<QuestionData> questionList { get; }
+
+    // 最终得分
+    public float finalScore { get; }
+
+    // 错题数
+    public int wrongCount { get; }
+    
+    // 对题数
+    public int correctCount { get; }
 
     // 获取当前题目
     public QuestionData GetCurrQuestion();
@@ -94,4 +106,13 @@ public class TopicRecordPkg
 
     // 重置
     public void ResetData();
+
+    #region 工具
+
+    /// <summary>
+    /// 获取字符串开头的选项字母，并返回大写字母。
+    /// </summary>
+    public char GetOptionLetter(string text);
+
+    #endregion
 }

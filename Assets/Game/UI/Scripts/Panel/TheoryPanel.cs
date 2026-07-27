@@ -3,6 +3,7 @@ using SUG.Essentials;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -37,13 +38,29 @@ public class TheoryPanel : UIBase
     [SerializeField] private UIPanel _passPanel; // 通过面板
     [SerializeField] private UIPanel _failPanel; // 不通过面板
     [SerializeField] private UIButton _passOkBtn; // 考核结束考核按钮
+    [SerializeField] private Image _scoreSilder; // 分数进度条
+    [SerializeField] private TextMeshProUGUI _finalScoreTx, _correctTx, _wrongTx; // 总分数，正确和错误题目数量文本控件
+    [SerializeField] private FailOptionItem _failPrefab; // 答题情况区域的预制体
+    [SerializeField] private Transform _failParent; // 生成模型的父物体
+    [SerializeField] private TextMeshProUGUI _analysisTx; // 解析题目内容
+    [SerializeField] private TextMeshProUGUI _analysisNumTx; // 解析面板序号文本
+    [SerializeField] private Image _analysisNumImg; // 解析面板序号ICON
+    [SerializeField] private AnalysisItem _analysisItemPrefab; // 分析题目面板Item预制体
+    [SerializeField] private Transform _analysisItemParent; // 分析题目面板Item预制体父类
+
+    [Header("UI 素材")]
+    [SerializeField] private Sprite _correctSprite;
+    [SerializeField] private Sprite _wrongSprite;
+    [SerializeField] private Sprite _analysisNormalSprite; // 分析选项表示默认icon
+    [SerializeField] private Sprite _analysisCorrectSprite; // 分析选项表示正确的icon
 
     // Data container
 
     // 题目引导管理容器
     private readonly List<AssOption> _assOptions = new List<AssOption>();
     private readonly List<QuestionNavigatorItem> _navigationItems = new List<QuestionNavigatorItem>();
-
+    private readonly List<FailOptionItem> _failOptions = new List<FailOptionItem>();
+    private readonly List<AnalysisItem> _analysisItems = new List<AnalysisItem>();
     // Inject
     [Inject] private IGameService  _gameMgr;
     [Inject] private ISceneService _sceneMgr;
@@ -181,11 +198,10 @@ public class TheoryPanel : UIBase
         _totalCnt.text = _assMgr.GetTotalQuestion().ToString();
         _currCnt.text = _assMgr.GetFinishQestionCount().ToString();
         RefreshProgress();
-        
+
         // 更新Canvas，使面板的Layout可以正常的排布UI控件
-        Canvas.ForceUpdateCanvases();
-        LayoutRebuilder.ForceRebuildLayoutImmediate(_assRect);
-        LayoutRebuilder.ForceRebuildLayoutImmediate(_naviRect);
+        RefreshCanvas(_assRect);
+        RefreshCanvas(_naviRect);
     }
 
     #endregion
@@ -364,10 +380,82 @@ public class TheoryPanel : UIBase
             //显示通过面板
             _passPanel.RaiseTrigger(InteractionTrigger.Selected);
             _passPanel.gameObject.SetActive(true);
+            _assPanel.gameObject.SetActive(false);
             return;
         }
-        
+
         // 考核不通过。
+
+        // 获取分数、正确题数、错误题数
+        int wrong        = _assMgr.wrongCount;
+        int correct      = _assMgr.correctCount;
+        float finalScore = _assMgr.finalScore;
+
+        // 更新UI界面，显示考试不通过界面，播放控件动画
+        _assPanel.gameObject.SetActive(false);
+        _failPanel.RaiseTrigger(InteractionTrigger.Selected);
+
+        _failPanel.gameObject.SetActive(true);
+        foreach (TheoryElementButton btn in _theoryBtns)
+        {
+            btn.RaiseTrigger(InteractionTrigger.DeSelect);
+            btn.SetPanelActive(false);
+            btn.gameObject.SetActive(false);
+        }
+
+        DOTween.To(() => 0f, x => _wrongTx.text = Mathf.RoundToInt(x).ToString(), wrong, 1.5f);
+        DOTween.To(() => 0f, x => _correctTx.text = Mathf.RoundToInt(x).ToString(), correct, 1.5f);
+        DOTween.To(() => 0f, x => { _finalScoreTx.text = x.ToString("F1"); _scoreSilder.fillAmount = (x / 100.0f); }, finalScore, 1.5f);
+
+        // 左侧控件按钮生成
+        _failOptions.Clear();
+        for (int i = 0; i < _assMgr.recordArr.Count(); ++i)
+        {
+            var foi = Essentials.Instantiate(_failPrefab, _failParent);
+            foi.Setup(_assMgr.recordArr[i].mark == 2, i, _correctSprite, _wrongSprite);
+            foi.gameObject.SetActive(true);
+            foi.openThisQuestion += DisplayQuestionAnalysis;
+            _failOptions.Add(foi);
+        }
+
+        // 默认显示第一个
+        DisplayQuestionAnalysis(0);
+    }
+
+    /// <summary>
+    /// 展示题目解析
+    /// </summary>
+    private void DisplayQuestionAnalysis(int index)
+    {
+        if (index < 0 || index >= _assMgr.questionList.Count
+            || index >= _assMgr.recordArr.Count())
+            return;
+
+        // 获取此index的题目信息和答题记录
+        var data = _assMgr.questionList[index];
+        var record = _assMgr.recordArr[index];
+
+        // 初始化解析面板
+        _analysisNumTx.text    = index.ToString();
+        _analysisNumImg.sprite = record.mark == 1 ? _correctSprite : _wrongSprite;
+        _analysisTx.text = data.title;
+
+        // 初始化题目选项
+        foreach (var item in _analysisItems)
+            item.gameObject.SetActive(false);
+
+        _analysisItems.Clear();
+        foreach (var op in data.options)
+        {
+            Sprite sp = op.isAnswer ? _analysisCorrectSprite : _analysisNormalSprite;
+            var aio = Essentials.Instantiate(_analysisItemPrefab, _analysisItemParent);
+            aio.Setup(op.content, sp);
+            aio.gameObject.SetActive(true);
+            _analysisItems.Add(aio);
+
+            // 刷新UI，让item适配当前文本内容
+            RefreshCanvas(aio.analysisTxRect);
+        }
     }
 
     #endregion
@@ -389,6 +477,13 @@ public class TheoryPanel : UIBase
     {
         float target = (float)_assMgr.GetFinishQestionCount() / _assMgr.GetTotalQuestion();
         _percentSlider.DOValue(target, 1.5f).SetEase(Ease.OutCubic);
+    }
+
+    // 更新Canvas，使面板的Layout可以正常的排布UI控件
+    private void RefreshCanvas(RectTransform rect)
+    {
+        Canvas.ForceUpdateCanvases();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
     }
 
     #endregion
