@@ -12,10 +12,11 @@ public class AnalysisItem : UIButton
 
     #region 初始化
 
-    public void Setup(string content, Sprite sprite)
+    public void Setup(string content, Sprite sprite, Color color)
     {
         _icon.sprite = sprite;
         _contentTx.text = content;
+        _contentTx.color = color;
     }
 
     #endregion

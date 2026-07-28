@@ -137,14 +137,14 @@ public class AssManager : MonoBehaviour, IAssService
         {
             bool a = op.isAnswer;
             bool b = _recordArr[index].selectContents.Contains(op.content);
-            Debug.Log($"{a} : {b}");
+            //Debug.Log($"{a} : {b}");
             _recordArr[index].mark = ((a && b) || (!a && !b)) ? 1 : 2;
 
             // 如果出现一个选项是有问题的，那么不在验证直接返回
             if (_recordArr[index].mark == 2) 
                 break;
         }
-        Debug.Log($"Rcore: {index} : {_recordArr[index].mark}");
+        //Debug.Log($"Rcore: {index} : {_recordArr[index].mark}");
     }
 
     /// <summary>

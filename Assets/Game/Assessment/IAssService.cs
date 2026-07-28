@@ -39,7 +39,7 @@ public class TopicRecordPkg
     /// <param name="isSingle">这个包是否为单选题</param>
     public void Record(bool isSave, string content, bool isSingle)
     {
-        UnityEngine.Debug.Log($"isSave: {isSave}, content: {content}, isSingle: {isSingle}");
+        //UnityEngine.Debug.Log($"isSave: {isSave}, content: {content}, isSingle: {isSingle}");
         // 如果这个题时单选题
         // 那么需要把之前的记录内容列表清空
         if (isSingle)

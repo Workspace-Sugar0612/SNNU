@@ -47,6 +47,10 @@ public class TheoryPanel : UIBase
     [SerializeField] private Image _analysisNumImg; // 解析面板序号ICON
     [SerializeField] private AnalysisItem _analysisItemPrefab; // 分析题目面板Item预制体
     [SerializeField] private Transform _analysisItemParent; // 分析题目面板Item预制体父类
+    [SerializeField] private TextMeshProUGUI _playOptionsTx, _questionScore; // 玩家该题的选择答案, 改题目分数
+    [SerializeField] private TextMeshProUGUI _analysisAnswerTx; // 答案解析文本
+    [SerializeField] private GameObject _analysisAnswerPanel; // 答案解析面板
+    [SerializeField] private UIButton _analysisAnswerButton; // 答案解析按钮
 
     [Header("UI 素材")]
     [SerializeField] private Sprite _correctSprite;
@@ -61,6 +65,7 @@ public class TheoryPanel : UIBase
     private readonly List<QuestionNavigatorItem> _navigationItems = new List<QuestionNavigatorItem>();
     private readonly List<FailOptionItem> _failOptions = new List<FailOptionItem>();
     private readonly List<AnalysisItem> _analysisItems = new List<AnalysisItem>();
+
     // Inject
     [Inject] private IGameService  _gameMgr;
     [Inject] private ISceneService _sceneMgr;
@@ -69,6 +74,7 @@ public class TheoryPanel : UIBase
     // Assessment data.
     private QuestionData _currData; // 当前题目内容数据
     private bool _isAssing = false; // 是否在考试
+    private int _analysisIndex = 0;
 
     #region 生命周期函数
 
@@ -162,6 +168,8 @@ public class TheoryPanel : UIBase
         _prevBtn.onClickEnter += PrevQuestion;
         _startTheory.onClickEnter += StartAssessment;
         _passOkBtn.onClickEnter += BackStartScene;
+        _analysisAnswerButton.onHoverEnter += DisplayAnalysisAnswerPanel;
+        _analysisAnswerButton.onHoverExit += () => { _analysisAnswerPanel.gameObject.SetActive(false); };
     }
 
     /// <summary>
@@ -236,7 +244,9 @@ public class TheoryPanel : UIBase
     // Event
     // ======================
 
-    // 返回开始选择界面
+    /// <summary>
+    /// 返回开始选择界面
+    /// </summary>
     private void BackStartScene()
     {
         var _gameCfg = _gameMgr.gameSetting;
@@ -244,7 +254,9 @@ public class TheoryPanel : UIBase
         _sceneMgr.LoadSceneAsync(_gameCfg.startScene);
     }
 
-    // 放弃考试时
+    /// <summary>
+    /// 放弃考试时
+    /// </summary>
     private void LetgoAss()
     {
         // 标记为【未考试】状态
@@ -262,7 +274,10 @@ public class TheoryPanel : UIBase
         else { }
     }
 
-    // 点击左边按钮列表选择不同的理论面板
+    /// <summary>
+    /// 点击左边按钮列表选择不同的理论面板
+    /// </summary>
+    /// <param name="mode"></param>
     private void OnClickTheoryButton(TheoryMode mode)
     {
         // 如果当前在考试不可对其进行点击
@@ -287,8 +302,10 @@ public class TheoryPanel : UIBase
             }
         }
     }
-    
-    // 点击开始考核按钮
+
+    /// <summary>
+    ///  点击开始考核按钮
+    /// </summary>
     private void StartAssessment()
     {
         // 更新左侧的理论按钮
@@ -306,7 +323,12 @@ public class TheoryPanel : UIBase
         _isAssing = true;
     }
 
-    // 当前题目用户给出答案时
+    /// <summary>
+    /// 当前题目用户给出答案时
+    /// </summary>
+    /// <param name="isOn"></param>
+    /// <param name="isAnswer"></param>
+    /// <param name="content"></param>
     private void OnOptionSelected(bool isOn, bool isAnswer, string content)
     {
         // 记录
@@ -334,7 +356,10 @@ public class TheoryPanel : UIBase
         RefreshProgress();
     }
 
-    // 切换题目
+    /// <summary>
+    /// 切换题目
+    /// </summary>
+    /// <param name="topicIndex"></param>
     private void SwitchTopics(int topicIndex)
     {
         // 设置考试管理器的当前的题目列表索引
@@ -349,21 +374,27 @@ public class TheoryPanel : UIBase
         _currNavigatorItem.SetNaviStateAndRefresh(NavigationState.Answering);
     }
 
-    // 下一题
+    /// <summary>
+    /// 下一题
+    /// </summary>
     private void NextQuestion()
     {
         int idx = _assMgr.NextQuestion();
         SwitchTopics(idx);
     }
 
-    // 上一题
+    /// <summary>
+    /// 上一题
+    /// </summary>
     private void PrevQuestion()
     {
         int idx = _assMgr.PrevQuestion();
         SwitchTopics(idx);
     }
 
-    // 提交答题(提交按钮点击事件)
+    /// <summary>
+    /// 提交答题(提交按钮点击事件)
+    /// </summary>
     private void SubmitTheAnswer()
     {
         // 检查答题情况
@@ -419,6 +450,7 @@ public class TheoryPanel : UIBase
         }
 
         // 默认显示第一个
+        _analysisIndex = 0;
         DisplayQuestionAnalysis(0);
     }
 
@@ -430,6 +462,8 @@ public class TheoryPanel : UIBase
         if (index < 0 || index >= _assMgr.questionList.Count
             || index >= _assMgr.recordArr.Count())
             return;
+
+        _analysisIndex = index; // 记录解析题目索引
 
         // 获取此index的题目信息和答题记录
         var data = _assMgr.questionList[index];
@@ -448,21 +482,51 @@ public class TheoryPanel : UIBase
         foreach (var op in data.options)
         {
             Sprite sp = op.isAnswer ? _analysisCorrectSprite : _analysisNormalSprite;
+            Color tc = op.isAnswer ? new Color(0.0f, 0.8f, 0.5f) : new Color(1.0f, 1.0f, 1.0f);
             var aio = Essentials.Instantiate(_analysisItemPrefab, _analysisItemParent);
-            aio.Setup(op.content, sp);
+            aio.Setup(op.content, sp, tc);
             aio.gameObject.SetActive(true);
             _analysisItems.Add(aio);
 
             // 刷新UI，让item适配当前文本内容
             RefreshCanvas(aio.analysisTxRect);
         }
+
+        // 还原玩家该题的选项
+        string options = "";
+        foreach (var sc in record.selectContents)
+            options += _assMgr.GetOptionLetter(sc);
+
+        _playOptionsTx.text = options;
+
+        // 显示该题目分数
+        _questionScore.text = data.score.ToString("F1");
+        RefreshCanvas(_questionScore.transform as RectTransform);
+
+        // 刷新整个Options的Rect
+        RefreshCanvas(_analysisItemParent as RectTransform);
+    }
+
+    /// <summary>
+    /// 显示答案解析面板
+    /// </summary>
+    private void DisplayAnalysisAnswerPanel()
+    {
+        // 获取题目解析数据，并更新UI
+        var data = _assMgr.questionList[_analysisIndex];
+        _analysisAnswerTx.text = data.analysis;
+        _analysisAnswerPanel.gameObject.SetActive(true);
+        RefreshCanvas(_analysisAnswerPanel.transform as RectTransform);
     }
 
     #endregion
 
     #region 工具方法
 
-    // 设置考核面板显示/关闭特效
+    /// <summary>
+    /// 设置考核面板显示/关闭特效
+    /// </summary>
+    /// <param name="active"></param>
     public void SetAssPanelActive(bool active)
     {
         InteractionTrigger trigger = active ? InteractionTrigger.Selected : InteractionTrigger.DeSelect;
@@ -479,7 +543,10 @@ public class TheoryPanel : UIBase
         _percentSlider.DOValue(target, 1.5f).SetEase(Ease.OutCubic);
     }
 
-    // 更新Canvas，使面板的Layout可以正常的排布UI控件
+    /// <summary>
+    /// 更新Canvas，使面板的Layout可以正常的排布UI控件
+    /// </summary>
+    /// <param name="rect"></param>
     private void RefreshCanvas(RectTransform rect)
     {
         Canvas.ForceUpdateCanvases();
