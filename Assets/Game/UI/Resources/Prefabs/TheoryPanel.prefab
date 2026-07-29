@@ -4287,7 +4287,7 @@ MonoBehaviour:
   - {fileID: 6257141969529648534}
   _startTheory: {fileID: 3156924571645015078}
   _assPanel: {fileID: 4881407015875008120}
-  _titleContext: {fileID: 6137723208989254073}
+  _titleContext: {fileID: 764022201677440365}
   _prevBtn: {fileID: 9023788586271162767}
   _nextBtn: {fileID: 2859822138080417777}
   _submitBtn: {fileID: 1151576889496139741}
@@ -10404,7 +10404,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 213.7437, y: -54.2}
-  m_SizeDelta: {x: 384.7711, y: 0}
+  m_SizeDelta: {x: 384.7711, y: 30.01}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4917614456514002385
 CanvasRenderer:
@@ -10984,6 +10984,7 @@ GameObject:
   - component: {fileID: 1047148307123755890}
   - component: {fileID: 6137723208989254073}
   - component: {fileID: 4913955696270480444}
+  - component: {fileID: 764022201677440365}
   m_Layer: 0
   m_Name: Title content
   m_TagString: Untagged
@@ -11125,6 +11126,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
   m_VerticalFit: 2
+--- !u!114 &764022201677440365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7206865309839446404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0060bd585a3eab2459e4324c6ed3ee73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SUG.Essentials.Runtime::UITMPText
+  type: 4
 --- !u!1 &7216134048569681525
 GameObject:
   m_ObjectHideFlags: 0
@@ -12354,7 +12368,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &562094084280227394
 RectTransform:
   m_ObjectHideFlags: 0

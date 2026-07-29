@@ -58,5 +58,7 @@ public sealed class TheoryElementButton : UIButton
     }
 
     // Interface
-    public void OnSelected() => OnPointClick();
+
+    // Obsolete
+    // public void OnSelected() => OnPointClick();
 }

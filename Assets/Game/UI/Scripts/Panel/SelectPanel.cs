@@ -1,4 +1,5 @@
 using SUG.Essentials;
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -8,7 +9,7 @@ public class SelectPanel : UIBase
     // —— UI Component ——
     [Header("UI组件")]
     [SerializeField] private UIButton _startBtn;
-    [SerializeField] private UIButton _theoryBtn;
+    [SerializeField] private TheoryButton _theoryBtn;
     [SerializeField] private ParcticeButton _parcticeBtn;
 
     // —— Runtime variable ——
@@ -42,7 +43,7 @@ public class SelectPanel : UIBase
     private void EventInitialized()
     {
         _startBtn.onClickEnter += OnStartSelected;
-        _parcticeBtn.onClickEnter += OnPracticeSelected;
+        _parcticeBtn.onSelected += OnPracticeSelected;
         _theoryBtn.onClickEnter   += OnTheorySelected;
     }
 
@@ -69,7 +70,7 @@ public class SelectPanel : UIBase
 
     private void OnPracticeSelected()
     {
-        _theoryBtn.RaiseTrigger(InteractionTrigger.DeSelect);
+        _theoryBtn.OnDeSelect();
         if (_gameMgr.isPar == false)
         {
             _parcticeBtn.Refresh(false);
@@ -79,7 +80,7 @@ public class SelectPanel : UIBase
         }
 
         _parcticeBtn.Refresh(true);
-        _parcticeBtn.RaiseTrigger(InteractionTrigger.Selected);
+        //_parcticeBtn.RaiseTrigger(InteractionTrigger.Selected);
         _gameMgr.currGameMode = GameType.Parctice;
     }
 }

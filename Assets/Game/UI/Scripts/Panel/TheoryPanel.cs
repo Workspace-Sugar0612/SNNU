@@ -19,7 +19,7 @@ public class TheoryPanel : UIBase
     [Header("考核UI成员")]
     [Header("答题区域")]
     [SerializeField] private UIPanel _assPanel; // 考核面板
-    [SerializeField] private TextMeshProUGUI _titleContext; // 题目
+    [SerializeField] private UITMPText _titleContext; // 题目
     [SerializeField] private UIButton _prevBtn, _nextBtn, _submitBtn; // 上一题按钮，下一题按钮，提交按钮
     [SerializeField] private ToggleGroup _optionGroup; // 考核选择按钮父物体
     [SerializeField] private AssOption _optionPrefab; // 考核选择按钮预制体
@@ -75,6 +75,7 @@ public class TheoryPanel : UIBase
     private QuestionData _currData; // 当前题目内容数据
     private bool _isAssing = false; // 是否在考试
     private int _analysisIndex = 0;
+    private bool _assCanTwitch = false; // 是否允许切换题目
 
     #region 生命周期函数
 
@@ -132,7 +133,7 @@ public class TheoryPanel : UIBase
 
         // 初始化理论考核按钮
         foreach (TheoryElementButton btn in _theoryBtns) { btn.TogglePanel(); }
-        _theoryBtns[0]?.OnPointClick();
+        _theoryBtns[0]?.RaiseTrigger(InteractionTrigger.Selected);
 
         // 初始化考核面板
         SetAssPanelActive(false);
@@ -188,19 +189,41 @@ public class TheoryPanel : UIBase
 
         // 根据新的data更新UI
         var pkg = _assMgr.recordArr[_assMgr.currIdx];
-        _titleContext.text = data.title;
-        foreach (var op in data.options)
+        IEnumerator InitializtionOptions()
         {
-            // 当前题目选项创建
-            AssOption option = Essentials.Instantiate(_optionPrefab, _optionGroup.transform);
-            option.Setup(op.isAnswer, op.content, data.isSingle, _optionGroup);
-            option.onTrigger += OnOptionSelected;
-            option.SetActive(true);
-            option.Verify(pkg?.selectContents);
+            // 生成选项并隐藏
+            foreach (var op in data.options)
+            {
+                // 当前题目选项创建
+                AssOption option = Essentials.Instantiate(_optionPrefab, _optionGroup.transform);
+                option.Setup(op.isAnswer, op.content, data.isSingle, _optionGroup);
+                option.onTrigger += OnOptionSelected;
+                option.Verify(pkg?.selectContents);
 
-            // 将创建好的option添加到管理列表中
-            _assOptions.Add(option);
+                option.SetActiveAnimVer(false, 0.0f);
+                option.SetActive(false);
+
+                // 将创建好的option添加到管理列表中
+                _assOptions.Add(option);
+            }
+
+            yield return new WaitForSeconds(0.1f);
+
+            // 渐变展示options
+            foreach (var op in _assOptions)
+            {
+                op.SetActive(true);
+                op.SetActiveAnimVer(true, 1.0f);
+            }
+
+            // 刷新界面，使得排布对齐
+            RefreshCanvas(_optionGroup.transform as RectTransform);
+
+            // 允许切换题目
+            _assCanTwitch = true;
         }
+
+        _titleContext.SetText(data.title, TextDisplayMode.Wbw, () => StartCoroutine(InitializtionOptions()));
 
         // 更新题目进度窗口的【已答数/总共数】控件的信息内容。
         _totalCnt.text = _assMgr.GetTotalQuestion().ToString();
@@ -362,6 +385,11 @@ public class TheoryPanel : UIBase
     /// <param name="topicIndex"></param>
     private void SwitchTopics(int topicIndex)
     {
+        if (!_assCanTwitch)
+            return;
+
+        _assCanTwitch = false;
+
         // 设置考试管理器的当前的题目列表索引
         // 设置新的题目/UI更新
         _assMgr.SetQuestionIndex(topicIndex);
@@ -379,6 +407,9 @@ public class TheoryPanel : UIBase
     /// </summary>
     private void NextQuestion()
     {
+        if (_assCanTwitch == false)
+            return;
+
         int idx = _assMgr.NextQuestion();
         SwitchTopics(idx);
     }
@@ -388,6 +419,9 @@ public class TheoryPanel : UIBase
     /// </summary>
     private void PrevQuestion()
     {
+        if (_assCanTwitch == false)
+            return;
+
         int idx = _assMgr.PrevQuestion();
         SwitchTopics(idx);
     }
@@ -498,6 +532,7 @@ public class TheoryPanel : UIBase
             options += _assMgr.GetOptionLetter(sc);
 
         _playOptionsTx.text = options;
+        RefreshCanvas(_playOptionsTx.transform as RectTransform);
 
         // 显示该题目分数
         _questionScore.text = data.score.ToString("F1");

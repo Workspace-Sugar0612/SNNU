@@ -1,6 +1,8 @@
+using DG.Tweening;
 using System;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,7 +25,16 @@ public class AssOption : MonoBehaviour
     // string：选项内容
     public event Action<bool, bool, string> onTrigger = null;
 
+    private MaskableGraphic[] _mgcs;
+
     // 生命周期函数
+
+    private void Awake()
+    {
+        _mgcs 
+            = transform.GetComponentsInChildren<MaskableGraphic>();
+    }
+
     private void Start()
     {
         _selected.onValueChanged.AddListener((_) => { onTrigger?.Invoke(_, _isAnswer, _contentTx.text); });
@@ -63,5 +74,23 @@ public class AssOption : MonoBehaviour
     public void SetActive(bool active)
     {
         gameObject.SetActive(active);
+    }
+
+    /// <summary>
+    /// 动画版本设计激活
+    /// </summary>
+    public void SetActiveAnimVer(bool active, float duration)
+    {
+        float alpha = active ? 1.0f : 0.0f;
+        foreach (var mgc in _mgcs)
+            mgc.SetGraphicAlpha(alpha, duration);
+    }
+}
+
+public static class GraphicExtensions
+{ 
+    public static void SetGraphicAlpha<T>(this T graphic, float alpha, float durtion) where T : MaskableGraphic
+    {
+        graphic.DOFade(alpha, durtion);    
     }
 }
