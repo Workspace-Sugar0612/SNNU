@@ -27,7 +27,7 @@ public class FailOptionItem : UIButton
     public void Setup(bool isWrong, int index, Sprite correctSprite, Sprite wrongSprite)
     {
         _icon.sprite = isWrong ? wrongSprite : correctSprite;
-        _serNumber.text = index.ToString();
+        _serNumber.text = (index + 1).ToString();
         _index = index;
     }
 

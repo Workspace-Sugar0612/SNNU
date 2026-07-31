@@ -56,8 +56,8 @@ public class SelectPanel : UIBase
         _startBtn.RaiseTrigger(InteractionTrigger.Selected);
 
         if (_gameCfg == null) _gameCfg = _gameMgr.gameSetting;
-        if (_gameMgr.currGameMode == GameType.Theory) _sceneMgr.LoadSceneAsync(_gameCfg.theoryScene);
-        else if (_gameMgr.currGameMode == GameType.Parctice) _sceneMgr.LoadSceneAsync(_gameCfg.parcitcScene);
+        if (_gameMgr.currGameMode == GameType.Theory) _sceneMgr.LoadSceneAsync(_gameCfg.theoryScene, true, LoadSceneMode.Single);
+        else if (_gameMgr.currGameMode == GameType.Parctice) _sceneMgr.LoadSceneAsync(_gameCfg.parcitcScene, true, LoadSceneMode.Single);
         else {}
     }
 

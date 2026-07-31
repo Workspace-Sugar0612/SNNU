@@ -33,6 +33,7 @@ public class TheoryPanel : UIBase
     [SerializeField] private QuestionNavigatorItem _titlementPrefab; // 答题题号预制体
     private QuestionNavigatorItem _currNavigatorItem; // 当前的题号item
     [SerializeField] private RectTransform _naviRect; // 【考试引导面板】的RectTransform, 用来刷新layout，不让其更新内容后UI控件错位。
+    [SerializeField] private TextMeshProUGUI _questionTypeTx; // 考试类型文本控件
 
     [Header("考试结果面板区域")]
     [SerializeField] private UIPanel _passPanel; // 通过面板
@@ -132,8 +133,11 @@ public class TheoryPanel : UIBase
         yield return null;
 
         // 初始化理论考核按钮
-        foreach (TheoryElementButton btn in _theoryBtns) { btn.TogglePanel(); }
+        foreach (TheoryElementButton btn in _theoryBtns)  
+            btn.SetPanelActive(false); 
+
         _theoryBtns[0]?.RaiseTrigger(InteractionTrigger.Selected);
+        _theoryBtns[0]?.SetPanelActive(true);
 
         // 初始化考核面板
         SetAssPanelActive(false);
@@ -186,6 +190,9 @@ public class TheoryPanel : UIBase
             //Destroy(option);
         }
         _assOptions.Clear();
+
+        // 更新当前题目类型UI控件内容（单选题/多选题？）
+        _questionTypeTx.text = data.isSingle ? "单选题" : "多选题";
 
         // 根据新的data更新UI
         var pkg = _assMgr.recordArr[_assMgr.currIdx];
@@ -258,6 +265,12 @@ public class TheoryPanel : UIBase
             _currNavigatorItem = _navigationItems[0];
             _currNavigatorItem.SetNaviStateAndRefresh(NavigationState.Answering);
         }
+
+        // 更新UI控件
+        // 上一次提交结束之后状态为：下一题按钮隐藏，提交按钮出现
+        // 重新设置后需要归位
+        _nextBtn.gameObject.SetActive(true);
+        _submitBtn.gameObject.SetActive(false);
     }
 
     #endregion
@@ -274,7 +287,7 @@ public class TheoryPanel : UIBase
     {
         var _gameCfg = _gameMgr.gameSetting;
 
-        _sceneMgr.LoadSceneAsync(_gameCfg.startScene);
+        _sceneMgr.LoadSceneAsync(_gameCfg.startScene, true);
     }
 
     /// <summary>
@@ -285,9 +298,16 @@ public class TheoryPanel : UIBase
         // 标记为【未考试】状态
         _isAssing = false;
 
+        // 考试结果面板隐藏（通过/不通过）
+        _passPanel.gameObject.SetActive(false);
+        _failPanel.gameObject.SetActive(false);
+
         // 关闭考试界面, 返回考核模式进入界面面板
         SetAssPanelActive(false);
         OnClickTheoryButton(TheoryMode.TheoryAssessment);
+
+        // 切换为普通模式
+        _gameMgr.currTheoryBackMode = TheoryBackMode.Normal;
     }
 
     private void OnTheoryBackClick(TheoryBackMode mode)
@@ -306,13 +326,10 @@ public class TheoryPanel : UIBase
         // 如果当前在考试不可对其进行点击
         if (_isAssing == true) return;
 
-        // 在不同的理论模式下，同一个【返回】按钮执行的功能不同
-        // 所以需要设置【返回】按钮的功能
-        _gameMgr.currTheoryBackMode = (mode & TheoryMode.TheoryAssessment) == 0 ? TheoryBackMode.Normal : TheoryBackMode.Assess;
-
         // 切换不同的理论按钮
         foreach (var btn in _theoryBtns)
         {
+            btn.gameObject.SetActive(true);
             if ((mode & btn.currMode) != 0)
             {
                 btn.RaiseTrigger(InteractionTrigger.Selected);
@@ -331,10 +348,14 @@ public class TheoryPanel : UIBase
     /// </summary>
     private void StartAssessment()
     {
+        // 在不同的理论模式下，同一个【返回】按钮执行的功能不同
+        // 所以需要设置【返回】按钮的模式
+        _gameMgr.currTheoryBackMode = TheoryBackMode.Assess;
+
         // 更新左侧的理论按钮
         foreach (TheoryElementButton btn in _theoryBtns)
         {
-            btn.RaiseTrigger(InteractionTrigger.DeSelect);
+            //btn.RaiseTrigger(InteractionTrigger.DeSelect);
             btn.SetPanelActive(false);
         }
 
@@ -431,6 +452,9 @@ public class TheoryPanel : UIBase
     /// </summary>
     private void SubmitTheAnswer()
     {
+        // 设置为不在考试的状态
+        _isAssing = false;
+
         // 检查答题情况
         bool isAllCorrect = true;
         foreach (var i in _assMgr.recordArr)
@@ -531,8 +555,12 @@ public class TheoryPanel : UIBase
         foreach (var sc in record.selectContents)
             options += _assMgr.GetOptionLetter(sc);
 
-        _playOptionsTx.text = options;
-        RefreshCanvas(_playOptionsTx.transform as RectTransform);
+        // 正序排序
+        char[] chars = options.ToCharArray();
+        Array.Sort(chars);
+        _playOptionsTx.text = new string(chars);
+
+        RefreshCanvas(_playOptionsTx.transform.parent as RectTransform);
 
         // 显示该题目分数
         _questionScore.text = data.score.ToString("F1");

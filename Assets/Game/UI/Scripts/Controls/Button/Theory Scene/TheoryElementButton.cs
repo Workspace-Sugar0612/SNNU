@@ -2,6 +2,7 @@ using UnityEngine;
 using SUG.Essentials;
 using System;
 using DG.Tweening;
+using UnityEngine.EventSystems;
 
 public sealed class TheoryElementButton : UIButton
 {
@@ -28,18 +29,11 @@ public sealed class TheoryElementButton : UIButton
     // ================
     private void Awake()
     {
-        onClickEnter += () => onSelect?.Invoke(currMode);
+        //onClickEnter += () => onSelect?.Invoke(currMode);
         //onHoverEnter += () => RaiseTrigger(InteractionTrigger.HoverEnter);
         //onHoverExit  += () => RaiseTrigger(InteractionTrigger.HoverExit);
 
         //initializaction();
-    }
-
-    // initializaction
-    private void initializaction()
-    {
-        targetPanel?.SetActive(false);
-        SetPanelActive(false); 
     }
 
     // Target panel action.
@@ -55,6 +49,13 @@ public sealed class TheoryElementButton : UIButton
         targetPanel?.transform.DOScale(tarScale, _scaleDuration);
         targetPanel?.SetActive(active);
         panelActive = !panelActive;
+    }
+
+    // Override
+    public override void OnPointerClick(PointerEventData eventData)
+    {
+        onSelect?.Invoke(currMode);
+        //base.OnPointerClick(eventData);
     }
 
     // Interface
