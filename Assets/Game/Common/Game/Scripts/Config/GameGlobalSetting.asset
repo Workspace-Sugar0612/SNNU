@@ -13,6 +13,18 @@ MonoBehaviour:
   m_Name: GameGlobalSetting
   m_EditorClassIdentifier: 
   isPracticeMode: 0
-  parcitcScene: Assets/Game/Scenes/Partice/Partice.unity
-  theoryScene: Assets/Game/Scenes/Theory/Theory.unity
-  startScene: Assets/Game/Scenes/Start/Start.unity
+  parcitcScene:
+    m_AssetGUID: 91dab21bdb11eb042b33f4f7d9b5219c
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  theoryScene:
+    m_AssetGUID: 953d5221605f0594c8b4bbfeb769d267
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  startScene:
+    m_AssetGUID: 99c9720ab356a0642a771bea13969a05
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0

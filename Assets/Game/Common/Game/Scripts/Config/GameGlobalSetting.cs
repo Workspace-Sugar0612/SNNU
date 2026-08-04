@@ -1,6 +1,7 @@
 using SUG.Essentials;
 using UnityEditor.Search.Providers;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 [CreateAssetMenu(fileName = "GameGlobalSetting", menuName = "Game/GameGlobalSetting")]
 public class GameGlobalSettingSO : ScriptableObject
@@ -9,7 +10,7 @@ public class GameGlobalSettingSO : ScriptableObject
     public bool isPracticeMode = false;
 
     [Header("场景实例")]
-    [Scene] public string parcitcScene;
-    [Scene] public string theoryScene;
-    [Scene] public string startScene;
+    public AssetReference parcitcScene;
+    public AssetReference theoryScene;
+    public AssetReference startScene;
 }

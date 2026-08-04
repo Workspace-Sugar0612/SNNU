@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a0eb748c62e1844fa460b6dd334bea4, type: 3}
   m_Name: Bootstrap
   m_EditorClassIdentifier: 
-  uiSetting: {fileID: 0}
+  uiSetting: {fileID: 11400000, guid: 791f6a64c3f5d57448ca71ec2f9150e5, type: 2}
